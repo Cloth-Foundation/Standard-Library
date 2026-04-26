@@ -1,0 +1,32 @@
+module cloth.io;
+
+import cloth.lang.Object;
+import cloth.io.stream.OutputStream;
+
+/**
+  * The `Out` class provides methods for writing output to the standard output stream.
+  */
+public class Out() {
+
+    private static const OutputStream output = new OutputStream() { public getter; };
+
+    private Out {}
+
+    private ~Out {
+        output.delete();
+    }
+
+    public static func println(Object object) :> void {
+        getOutput().print(object);
+        getOutput().print("\n");
+    }
+
+    public static func print(Object object) :> void {
+        getOutput().print(object);
+    }
+
+    public static func printf(string format, Object[] args) :> void {
+        getOutput().printf(format, args);
+    }
+
+}

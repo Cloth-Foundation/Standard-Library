@@ -1,0 +1,14 @@
+module cloth.io;
+
+/**
+  * The `In` class provides methods for reading input from the standard input stream.
+  */
+public class In() {
+
+    private static const InputStream input = new InputStream() { public getter; };
+
+    private In {}
+
+    private ~In {}
+
+}
