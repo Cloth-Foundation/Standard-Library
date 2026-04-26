@@ -1,0 +1,11 @@
+module cloth.math;
+
+import cloth.math.number.NumberProvider;
+
+public class Random() is NumberProvider {
+
+    private Random {}
+
+    private ~Random {}
+
+}

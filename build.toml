@@ -1,0 +1,10 @@
+[Project]
+name = "Standard Library"
+version = "0.1.0"
+authors = ["Wylan Shoemaker <iso2t@protonmail.com>"]
+description = "The standard library for the Cloth programming language."
+
+[Build]
+type = "library"
+
+[Dependencies]

@@ -1,0 +1,4 @@
+module cloth.math.number;
+
+public interface NumberProvider {
+}
