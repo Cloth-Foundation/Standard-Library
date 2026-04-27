@@ -1,0 +1,9 @@
+module cloth.collections;
+
+public class Set() {
+
+    private Set {}
+
+    private ~Set {}
+
+}

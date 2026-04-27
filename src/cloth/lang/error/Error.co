@@ -1,0 +1,15 @@
+module cloth.lang.error;
+
+public class Error(string! message) {
+
+    public const string! message { public getter; };
+
+    public Error {
+        this.message = message;
+    }
+
+    #Override
+    public func toString() :> string {
+        return "Error: " + getMessage();
+    }
+}
