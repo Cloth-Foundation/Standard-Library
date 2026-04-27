@@ -1,0 +1,9 @@
+module cloth.lang;
+
+public class Object() {
+
+    private Object {}
+
+    private ~Object {}
+
+}
