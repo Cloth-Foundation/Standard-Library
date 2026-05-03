@@ -5,6 +5,7 @@ authors = ["Wylan Shoemaker <iso2t@protonmail.com>"]
 description = "The standard library for the Cloth programming language."
 
 [Build]
-type = "library"
+output = "library"
+source = "src"
 
 [Dependencies]
