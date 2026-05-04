@@ -1,6 +1,6 @@
 module cloth.lang;
 
-public class Object() {
+public class () {
 
     private Object {}
 

@@ -1,5 +1,5 @@
 module cloth.system;
 
-public class Environment() {
+public class () {
 
 }

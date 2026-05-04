@@ -1,5 +1,5 @@
 module cloth.lang.traits;
 
-public trait Library {
+public trait {
     public func getName() :> string;
 }

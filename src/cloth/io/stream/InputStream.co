@@ -1,6 +1,6 @@
 module cloth.io.stream;
 
-public class InputStream() {
+public class () {
 
     private InputStream {}
 

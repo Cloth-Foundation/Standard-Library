@@ -1,6 +1,6 @@
 module cloth.collections;
 
-public class Set() {
+public class () {
 
     private Set {}
 

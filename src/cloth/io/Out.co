@@ -6,7 +6,7 @@ import cloth.io.stream.OutputStream;
 /**
   * The `Out` class provides methods for writing output to the standard output stream.
   */
-public class Out() {
+public class () {
 
     private static const OutputStream output = new OutputStream() { public getter; };
 
@@ -16,16 +16,16 @@ public class Out() {
         output.delete();
     }
 
-    public static func println(Object object) :> void {
+    public static func println(Object object) -> void {
         getOutput().print(object);
         getOutput().print("\n");
     }
 
-    public static func print(Object object) :> void {
+    public static func print(Object object) -> void {
         getOutput().print(object);
     }
 
-    public static func printf(string format, Object[] args) :> void {
+    public static func printf(string format, Object[] args) -> void {
         getOutput().printf(format, args);
     }
 
