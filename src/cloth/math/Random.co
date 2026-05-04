@@ -2,7 +2,7 @@ module cloth.math;
 
 import cloth.math.number.NumberProvider;
 
-public class Random() is NumberProvider {
+public class () is NumberProvider {
 
     private Random {}
 
