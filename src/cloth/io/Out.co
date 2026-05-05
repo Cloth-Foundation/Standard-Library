@@ -1,54 +1,42 @@
 module cloth.io;
 
+import cloth.io.stream.OutputStream;
+
 public class () {
 
-    @Extern("puts")
-    private static func _puts(string s) : void;
-
-    @Extern("printf")
-    private static func _printf_i32(string fmt, i32 v) : i32;
-
-    @Extern("printf")
-    private static func _printf_i64(string fmt, i64 v) : i32;
-
-    @Extern("printf")
-    private static func _printf_u32(string fmt, u32 v) : i32;
-
-    @Extern("printf")
-    private static func _printf_u64(string fmt, u64 v) : i32;
-
-    @Extern("printf")
-    private static func _printf_f64(string fmt, f64 v) : i32;
-
-    public static func println__string(string v) : void {
-        _puts(v);
+    public static func println() : void {
+        OutputStream.$puts("");
     }
 
-    public static func println__i32(i32 v) : void {
-        _printf_i32("%d\n", v);
+    public static func println(string v) : void {
+        OutputStream.$puts(v);
     }
 
-    public static func println__i64(i64 v) : void {
-        _printf_i64("%lld\n", v);
+    public static func println(i32 v) : void {
+        OutputStream.$printf_i32("%d\n", v);
     }
 
-    public static func println__u32(u32 v) : void {
-        _printf_u32("%u\n", v);
+    public static func println(i64 v) : void {
+        OutputStream.$printf_i64("%lld\n", v);
     }
 
-    public static func println__u64(u64 v) : void {
-        _printf_u64("%llu\n", v);
+    public static func println(u32 v) : void {
+        OutputStream.$printf_u32("%u\n", v);
     }
 
-    public static func println__f64(f64 v) : void {
-        _printf_f64("%f\n", v);
+    public static func println(u64 v) : void {
+        OutputStream.$printf_u64("%llu\n", v);
     }
 
-    public static func println__bool(bool v) : void {
+    public static func println(f64 v) : void {
+        OutputStream.$printf_f64("%f\n", v);
+    }
+
+    public static func println(bool v) : void {
         if (v) {
-            _puts("true");
+            OutputStream.$puts("true");
         } else {
-            _puts("false");
+            OutputStream.$puts("false");
         }
     }
 

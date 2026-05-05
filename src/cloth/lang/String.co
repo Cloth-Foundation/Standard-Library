@@ -1,0 +1,21 @@
+module cloth.lang;
+
+public class () {
+
+    @Extern("strlen")
+    private static func $strlen(string s) : i64;
+
+    @Extern("calloc")
+    private static func $calloc(i64 num, i64 size) : string;
+
+    @Extern("strcat")
+    private static func $strcat(string dst, string src) : string;
+
+    public static func _concat(string a, string b) : string {
+        let buf = $calloc($strlen(a) + $strlen(b) + 1, 1);
+        $strcat(buf, a);
+        $strcat(buf, b);
+        return buf;
+    }
+
+}

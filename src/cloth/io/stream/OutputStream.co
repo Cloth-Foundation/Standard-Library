@@ -1,0 +1,27 @@
+module cloth.io.stream;
+
+public class () {
+
+    private OutputStream {}
+
+    private ~OutputStream {}
+
+    @Extern("puts")
+    public static func $puts(string s) : void;
+
+    @Extern("printf")
+    public static func $printf_i32(string fmt, i32 v) : i32;
+
+    @Extern("printf")
+    public static func $printf_i64(string fmt, i64 v) : i64;
+
+    @Extern("printf")
+    public static func $printf_u32(string fmt, u32 v) : u32;
+
+    @Extern("printf")
+    public static func $printf_u64(string fmt, u64 v) : u64;
+
+    @Extern("printf")
+    public static func $printf_f64(string fmt, f64 v) : f64;
+
+}
