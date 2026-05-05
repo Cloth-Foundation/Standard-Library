@@ -11,7 +11,7 @@ public class () {
     @Extern("strcat")
     private static func $strcat(string dst, string src) : string;
 
-    public static func _concat(string a, string b) : string {
+    public static func concat(string a, string b) : string {
         let buf = $calloc($strlen(a) + $strlen(b) + 1, 1);
         $strcat(buf, a);
         $strcat(buf, b);
