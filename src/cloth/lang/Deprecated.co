@@ -1,4 +1,13 @@
 ﻿module cloth.lang;
 
 public trait {
+
+    string? since;
+
+    string? replacedBy;
+
+    string? version;
+
+    bool? forRemoval;
+
 }
