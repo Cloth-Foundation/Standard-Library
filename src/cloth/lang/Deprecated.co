@@ -2,12 +2,12 @@
 
 public trait {
 
-    string? since;
+    /*string? since;
 
     string? replacedBy;
 
     string? version;
 
-    bool? forRemoval;
+    bool? forRemoval;*/
 
 }

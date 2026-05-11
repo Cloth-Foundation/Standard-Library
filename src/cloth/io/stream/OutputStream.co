@@ -22,6 +22,9 @@ public class () {
     public static func $printf_u64(string fmt, u64 v) : u64;
 
     @Extern("printf")
+    public static func $printf_f32(string fmt, f32 v) : f32;
+
+    @Extern("printf")
     public static func $printf_f64(string fmt, f64 v) : f64;
 
 }
