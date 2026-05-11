@@ -28,6 +28,14 @@ public class () {
         OutputStream.$printf_u64("%llu\n", v);
     }
 
+    public static func println(f32 v) : void {
+        // printf's `%f` reads `double` from varargs — promote `f32` to `f64` so the
+        // call-site ABI matches what printf expects. The C compiler does this
+        // automatically for variadic calls in C, but Cloth's @Extern bindings are
+        // statically typed so we widen explicitly.
+        OutputStream.$printf_f64("%f\n", v as f64);
+    }
+
     public static func println(f64 v) : void {
         OutputStream.$printf_f64("%f\n", v);
     }
