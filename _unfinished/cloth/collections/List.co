@@ -1,9 +1,0 @@
-module cloth.collections;
-
-public class () {
-
-    private List {}
-
-    private ~List {}
-
-}
