@@ -1,0 +1,10 @@
+manifest-version = 1
+
+[package]
+name = "standard-library"
+version = "1.0.0"
+
+[executable]
+entry = "Main.co"
+
+[dependencies]

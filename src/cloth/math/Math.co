@@ -1,0 +1,456 @@
+/// Cloth Mathematics Library
+
+static final float64 E = 2.71828182845904523536;
+static final float64 PI = 3.14159265358979323846;
+static final float64 TAU = 6.28318530717958647692;
+static final float64 SQRT2 = 1.41421356237309504880;
+static final float64 LN2 = 0.69314718055994530942;
+static final float64 LN10 = 2.30258509299404568402;
+static final float64 GOLDEN_RATIO = 1.61803398874989484820;
+
+static func Abs(int8 value): int8 { if (value < 0) { return -value; } return value; }
+static func Abs(int16 value): int16 { if (value < 0) { return -value; } return value; }
+static func Abs(int32 value): int32 { if (value < 0) { return -value; } return value; }
+static func Abs(int64 value): int64 { if (value < 0) { return -value; } return value; }
+static func Abs(float32 value): float32 { if (value < 0.0) { return -value; } return value; }
+static func Abs(float64 value): float64 { if (value < 0.0) { return -value; } return value; }
+
+static func Sign(int32 value): int32 { if (value < 0) { return -1; } if (value > 0) { return 1; } return 0; }
+static func Sign(int64 value): int32 { if (value < 0) { return -1; } if (value > 0) { return 1; } return 0; }
+static func Sign(float32 value): int32 { return Sign(float64(value)); }
+static func Sign(float64 value): int32 { if (value < 0.0) { return -1; } if (value > 0.0) { return 1; } return 0; }
+
+static func Min(int32 a, int32 b): int32 { if (a < b) { return a; } return b; }
+static func Min(int64 a, int64 b): int64 { if (a < b) { return a; } return b; }
+static func Min(uint32 a, uint32 b): uint32 { if (a < b) { return a; } return b; }
+static func Min(uint64 a, uint64 b): uint64 { if (a < b) { return a; } return b; }
+static func Min(float32 a, float32 b): float32 { return float32(Min(float64(a), float64(b))); }
+static func Min(float64 a, float64 b): float64 {
+  if (IsNaN(a)) { return a; }
+  if (IsNaN(b)) { return b; }
+  if (a < b) { return a; }
+  return b;
+}
+
+static func Max(int32 a, int32 b): int32 { if (a > b) { return a; } return b; }
+static func Max(int64 a, int64 b): int64 { if (a > b) { return a; } return b; }
+static func Max(uint32 a, uint32 b): uint32 { if (a > b) { return a; } return b; }
+static func Max(uint64 a, uint64 b): uint64 { if (a > b) { return a; } return b; }
+static func Max(float32 a, float32 b): float32 { return float32(Max(float64(a), float64(b))); }
+static func Max(float64 a, float64 b): float64 {
+  if (IsNaN(a)) { return a; }
+  if (IsNaN(b)) { return b; }
+  if (a > b) { return a; }
+  return b;
+}
+
+static func Clamp(int32 value, int32 low, int32 high): int32 { return Min(Max(value, low), high); }
+static func Clamp(int64 value, int64 low, int64 high): int64 { return Min(Max(value, low), high); }
+static func Clamp(float32 value, float32 low, float32 high): float32 {
+  return float32(Clamp(float64(value), float64(low), float64(high)));
+}
+static func Clamp(float64 value, float64 low, float64 high): float64 {
+  if (low > high) { return nan(); }
+  return Min(Max(value, low), high);
+}
+
+static func IsNaN(float32 value): bool { return value != value; }
+static func IsNaN(float64 value): bool { return value != value; }
+static func IsFinite(float32 value): bool { float32 difference = value - value; return difference == difference; }
+static func IsFinite(float64 value): bool { float64 difference = value - value; return difference == difference; }
+static func IsInfinity(float32 value): bool { return value == value && !IsFinite(value); }
+static func IsInfinity(float64 value): bool { return value == value && !IsFinite(value); }
+
+static func Truncate(float32 value): float32 { return float32(Truncate(float64(value))); }
+static func Truncate(float64 value): float64 {
+  if (!IsFinite(value)) { return value; }
+  if (Abs(value) >= 9007199254740992.0) { return value; }
+  return float64(int64(value));
+}
+static func Floor(float32 value): float32 { return float32(Floor(float64(value))); }
+static func Floor(float64 value): float64 {
+  if (!IsFinite(value)) { return value; }
+  float64 whole = Truncate(value);
+  if (value < whole) { return whole - 1.0; }
+  return whole;
+}
+static func Ceil(float32 value): float32 { return float32(Ceil(float64(value))); }
+static func Ceil(float64 value): float64 {
+  if (!IsFinite(value)) { return value; }
+  float64 whole = Truncate(value);
+  if (value > whole) { return whole + 1.0; }
+  return whole;
+}
+// Halfway values round away from zero.
+static func Round(float32 value): float32 { return float32(Round(float64(value))); }
+static func Round(float64 value): float64 {
+  if (!IsFinite(value)) { return value; }
+  if (value < 0.0) { return Ceil(value - 0.5); }
+  return Floor(value + 0.5);
+}
+static func Fract(float32 value): float32 { return value - Truncate(value); }
+static func Fract(float64 value): float64 { return value - Truncate(value); }
+static func Mod(float32 value, float32 divisor): float32 { return float32(Mod(float64(value), float64(divisor))); }
+static func Mod(float64 value, float64 divisor): float64 {
+  if (divisor == 0.0 || !IsFinite(value) || IsNaN(divisor)) { return nan(); }
+  if (IsInfinity(divisor)) { return value; }
+  return value - Truncate(value / divisor) * divisor;
+}
+
+static func Sqrt(float32 value): float32 { return float32(Sqrt(float64(value))); }
+static func Sqrt(float64 value): float64 {
+  if (value < 0.0) { return nan(); }
+  if (value == 0.0 || !IsFinite(value)) { return value; }
+  float64 estimate = 1.0;
+  if (value >= 1.0) { estimate = value; }
+  int32 i = 0;
+  while (i < 1024) {
+    float64 next = (estimate + value / estimate) * 0.5;
+    if (next == estimate) { return next; }
+    estimate = next;
+    i++;
+  }
+  return estimate;
+}
+
+static func Cbrt(float32 value): float32 { return float32(Cbrt(float64(value))); }
+static func Cbrt(float64 value): float64 {
+  if (value == 0.0 || !IsFinite(value)) { return value; }
+  float64 magnitude = Abs(value);
+  float64 estimate = 1.0;
+  if (magnitude >= 1.0) { estimate = magnitude; }
+  int32 i = 0;
+  while (i < 1024) {
+    float64 next = (2.0 * estimate + magnitude / (estimate * estimate)) / 3.0;
+    if (next == estimate) { if (value < 0.0) { return -next; } return next; }
+    estimate = next;
+    i++;
+  }
+  if (value < 0.0) { return -estimate; }
+  return estimate;
+}
+
+static func Pow(float32 base, float32 exponent): float32 {
+  return float32(Pow(float64(base), float64(exponent)));
+}
+
+/// Computes the power of a base raised to an exponent.
+/// - Parameters:
+///   - base: The base value.
+///   - exponent: The exponent value.
+/// - Returns: The result of raising the base to the exponent.
+static func Pow(float64 base, int32 exponent): float64 { return powInteger(base, int64(exponent)); }
+static func Pow(float64 base, int64 exponent): float64 { return powInteger(base, exponent); }
+static func Pow(float64 base, float64 exponent): float64 {
+  if (exponent == 0.0) { return 1.0; }
+  if (IsNaN(base) || IsNaN(exponent)) { return nan(); }
+  if (base == 0.0) { if (exponent < 0.0) { return 1.0 / base; } return base; }
+  if (base < 0.0) {
+    if (Mod(exponent, 1.0) != 0.0) { return nan(); }
+    float64 result = Exp(exponent * Ln(-base));
+    if (Mod(exponent, 2.0) == 0.0) { return result; }
+    return -result;
+  }
+  return Exp(exponent * Ln(base));
+}
+
+/// Computes the exponential of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The exponential of the input value.
+static func Exp(float32 value): float32 { return float32(Exp(float64(value))); }
+static func Exp(float64 value): float64 {
+  if (IsNaN(value)) { return value; }
+  if (IsInfinity(value)) { if (value < 0.0) { return 0.0; } return value; }
+  if (value > 709.782712893384) { return 1.0 / 0.0; }
+  if (value < -745.133219101941) { return 0.0; }
+  float64 reduced = value;
+  float64 scale = 1.0;
+  while (reduced > 0.5 * LN2) { reduced -= LN2; scale *= 2.0; }
+  while (reduced < -0.5 * LN2) { reduced += LN2; scale *= 0.5; }
+  float64 term = 1.0;
+  float64 sum = 1.0;
+  int32 i = 1;
+  while (i <= 32) { term *= reduced / float64(i); sum += term; i++; }
+  return sum * scale;
+}
+
+/// Computes the natural logarithm of 1 plus a value.
+static func Expm1(float32 value): float32 { return float32(Expm1(float64(value))); }
+static func Expm1(float64 value): float64 {
+  if (Abs(value) > 0.00001) { return Exp(value) - 1.0; }
+  float64 term = value;
+  float64 sum = value;
+  int32 i = 2;
+  while (i <= 24) { term *= value / float64(i); sum += term; i++; }
+  return sum;
+}
+
+/// Computes the natural logarithm of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The natural logarithm of the input value.
+static func Ln(float32 value): float32 { return float32(Ln(float64(value))); }
+static func Ln(float64 value): float64 {
+  if (value < 0.0 || IsNaN(value)) { return nan(); }
+  if (value == 0.0) { return -1.0 / value; }
+  if (IsInfinity(value)) { return value; }
+  float64 normalized = value;
+  int32 power = 0;
+  while (normalized > 1.5) { normalized *= 0.5; power++; }
+  while (normalized < 0.75) { normalized *= 2.0; power--; }
+  float64 ratio = (normalized - 1.0) / (normalized + 1.0);
+  float64 squared = ratio * ratio;
+  float64 term = ratio;
+  float64 sum = ratio;
+  int32 denominator = 3;
+  while (denominator <= 81) { term *= squared; sum += term / float64(denominator); denominator += 2; }
+  return 2.0 * sum + float64(power) * LN2;
+}
+
+/// Computes the natural logarithm of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The natural logarithm of the input value.
+static func Log(float32 value): float32 { return Ln(value); }
+static func Log(float64 value): float64 { return Ln(value); }
+
+/// Computes the base-2 logarithm of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The base-2 logarithm of the input value.
+static func Log2(float32 value): float32 { return float32(Log2(float64(value))); }
+static func Log2(float64 value): float64 { return Ln(value) / LN2; }
+
+/// Computes the base-10 logarithm of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The base-10 logarithm of the input value.
+static func Log10(float32 value): float32 { return float32(Log10(float64(value))); }
+static func Log10(float64 value): float64 { return Ln(value) / LN10; }
+
+/// Computes the natural logarithm of 1 plus a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The natural logarithm of 1 plus the input value.
+static func Log1p(float32 value): float32 { return float32(Log1p(float64(value))); }
+static func Log1p(float64 value): float64 {
+  if (Abs(value) > 0.00001) { return Ln(1.0 + value); }
+  float64 term = value;
+  float64 sum = value;
+  int32 i = 2;
+  while (i <= 48) { term *= -value; sum += term / float64(i); i++; }
+  return sum;
+}
+
+/// Computes the sine of a value.
+/// - Parameters:
+///   - radians: The angle in radians.
+/// - Returns: The sine of the input angle.
+static func Sin(float32 radians): float32 { return float32(Sin(float64(radians))); }
+static func Sin(float64 radians): float64 {
+  if (!IsFinite(radians)) { return nan(); }
+  float64 x = reduceAngle(radians);
+  float64 squared = x * x;
+  float64 term = x;
+  float64 sum = x;
+  int32 i = 1;
+  while (i <= 12) { term *= -squared / float64((2 * i) * (2 * i + 1)); sum += term; i++; }
+  return sum;
+}
+
+/// Computes the cosine of a value.
+/// - Parameters:
+///   - radians: The angle in radians.
+/// - Returns: The cosine of the input angle.
+static func Cos(float32 radians): float32 { return float32(Cos(float64(radians))); }
+static func Cos(float64 radians): float64 {
+  if (!IsFinite(radians)) { return nan(); }
+  float64 x = reduceAngle(radians);
+  float64 squared = x * x;
+  float64 term = 1.0;
+  float64 sum = 1.0;
+  int32 i = 1;
+  while (i <= 12) { term *= -squared / float64((2 * i - 1) * (2 * i)); sum += term; i++; }
+  return sum;
+}
+
+/// Computes the tangent of a value.
+/// - Parameters:
+///   - radians: The angle in radians.
+/// - Returns: The tangent of the input angle.
+static func Tan(float32 radians): float32 { return float32(Tan(float64(radians))); }
+static func Tan(float64 radians): float64 { return Sin(radians) / Cos(radians); }
+
+/// Computes the inverse tangent of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The inverse tangent of the input value.
+static func Atan(float32 value): float32 { return float32(Atan(float64(value))); }
+static func Atan(float64 value): float64 {
+  if (IsNaN(value)) { return value; }
+  if (value < 0.0) { return -Atan(-value); }
+  if (value > 1.0) { return PI * 0.5 - Atan(1.0 / value); }
+  if (value > 0.4142135623730951) { return PI * 0.25 + Atan((value - 1.0) / (value + 1.0)); }
+  float64 squared = value * value;
+  float64 term = value;
+  float64 sum = value;
+  int32 denominator = 3;
+  while (denominator <= 49) { term *= -squared; sum += term / float64(denominator); denominator += 2; }
+  return sum;
+}
+
+/// Computes the inverse tangent of the quotient of its arguments.
+/// - Parameters:
+///   - y: The y-coordinate.
+///   - x: The x-coordinate.
+/// - Returns: The angle in radians between the positive x-axis and the point (x, y).
+static func Atan2(float32 y, float32 x): float32 { return float32(Atan2(float64(y), float64(x))); }
+static func Atan2(float64 y, float64 x): float64 {
+  if (IsNaN(x) || IsNaN(y)) { return nan(); }
+  if (x > 0.0) { return Atan(y / x); }
+  if (x < 0.0 && y >= 0.0) { return Atan(y / x) + PI; }
+  if (x < 0.0) { return Atan(y / x) - PI; }
+  if (y > 0.0) { return PI * 0.5; }
+  if (y < 0.0) { return -PI * 0.5; }
+  return 0.0;
+}
+
+/// Computes the inverse sine of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The inverse sine of the input value.
+static func Asin(float32 value): float32 { return float32(Asin(float64(value))); }
+static func Asin(float64 value): float64 {
+  if (value < -1.0 || value > 1.0) { return nan(); }
+  return Atan2(value, Sqrt(1.0 - value * value));
+}
+
+/// Computes the inverse cosine of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The inverse cosine of the input value.
+static func Acos(float32 value): float32 { return float32(Acos(float64(value))); }
+static func Acos(float64 value): float64 {
+  if (value < -1.0 || value > 1.0) { return nan(); }
+  return Atan2(Sqrt(1.0 - value * value), value);
+}
+
+/// Computes the hyperbolic sine of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The hyperbolic sine of the input value.
+static func Sinh(float32 value): float32 { return float32(Sinh(float64(value))); }
+static func Sinh(float64 value): float64 { return (Exp(value) - Exp(-value)) * 0.5; }
+
+/// Computes the hyperbolic cosine of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The hyperbolic cosine of the input value.
+static func Cosh(float32 value): float32 { return float32(Cosh(float64(value))); }
+static func Cosh(float64 value): float64 { return (Exp(value) + Exp(-value)) * 0.5; }
+
+/// Computes the hyperbolic tangent of a value.
+/// - Parameters:
+///   - value: The input value.
+/// - Returns: The hyperbolic tangent of the input value.
+static func Tanh(float32 value): float32 { return float32(Tanh(float64(value))); }
+static func Tanh(float64 value): float64 {
+  if (value > 20.0) { return 1.0; }
+  if (value < -20.0) { return -1.0; }
+  float64 doubled = Exp(2.0 * value);
+  return (doubled - 1.0) / (doubled + 1.0);
+}
+
+/// Computes the hypotenuse of a right-angled triangle given the lengths of the other two sides.
+/// - Parameters:
+///   - x: The length of one side.
+///   - y: The length of the other side.
+/// - Returns: The length of the hypotenuse.
+static func Hypot(float32 x, float32 y): float32 { return float32(Hypot(float64(x), float64(y))); }
+static func Hypot(float64 x, float64 y): float64 {
+  float64 scale = Max(Abs(x), Abs(y));
+  if (scale == 0.0 || IsInfinity(scale)) { return scale; }
+  float64 a = x / scale;
+  float64 b = y / scale;
+  return scale * Sqrt(a * a + b * b);
+}
+
+/// Performs a linear interpolation between two values.
+/// - Parameters:
+///   - a: The start value.
+///   - b: The end value.
+///   - amount: The interpolation factor, typically in the range [0, 1].
+/// - Returns: The interpolated value.
+static func Lerp(float32 a, float32 b, float32 amount): float32 { return a + (b - a) * amount; }
+static func Lerp(float64 a, float64 b, float64 amount): float64 { return a + (b - a) * amount; }
+
+/// Converts an angle from degrees to radians.
+/// - Parameters:
+///   - degrees: The angle in degrees.
+/// - Returns: The equivalent angle in radians.
+static func ToRadians(float32 degrees): float32 { return float32(float64(degrees) * PI / 180.0); }
+static func ToRadians(float64 degrees): float64 { return degrees * PI / 180.0; }
+
+/// Converts an angle from radians to degrees.
+/// - Parameters:
+///   - radians: The angle in radians.
+/// - Returns: The equivalent angle in degrees.
+static func ToDegrees(float32 radians): float32 { return float32(float64(radians) * 180.0 / PI); }
+static func ToDegrees(float64 radians): float64 { return radians * 180.0 / PI; }
+
+/// Computes the greatest common divisor (GCD) of two integers.
+/// - Parameters:
+///   - a: The first integer.
+///   - b: The second integer.
+/// - Returns: The greatest common divisor of the two integers.
+static func Gcd(int32 a, int32 b): int32 {
+  a = Abs(a); b = Abs(b);
+  while (b != 0) { int32 remainder = a % b; a = b; b = remainder; }
+  return a;
+}
+
+/// Computes the least common multiple (LCM) of two integers.
+/// - Parameters:
+///   - a: The first integer.
+///   - b: The second integer.
+/// - Returns: The least common multiple of the two integers. Returns 0 if either integer is 0.
+static func Lcm(int32 a, int32 b): int32 {
+  if (a == 0 || b == 0) { return 0; }
+  return Abs((a / Gcd(a, b)) * b);
+}
+
+/// Raises a base to an integer exponent.
+/// - Parameters:
+///   - base: The base value.
+///   - exponent: The integer exponent.
+/// - Returns: The result of raising the base to the given exponent.
+static func powInteger(float64 base, int64 exponent): float64 {
+  if (exponent == 0) { return 1.0; }
+  bool reciprocal = exponent < 0;
+  float64 result = 1.0;
+  int64 power = exponent;
+  if (power < 0) { result = base; power = -(power + 1); }
+  float64 factor = base;
+  while (power > 0) {
+    if (power % 2 == 1) { result *= factor; }
+    factor *= factor;
+    power /= 2;
+  }
+  if (reciprocal) { return 1.0 / result; }
+  return result;
+}
+
+/// Reduces an angle in radians to the range [-π, π].
+/// - Parameters:
+///   - radians: The angle in radians.
+/// - Returns: The equivalent angle in the range [-π, π].
+static func reduceAngle(float64 radians): float64 {
+  float64 value = Mod(radians, TAU);
+  if (value > PI) { value -= TAU; }
+  if (value < -PI) { value += TAU; }
+  return value;
+}
+
+/// Returns a NaN (Not-a-Number) value.
+static func nan(): float64 { return 0.0 / 0.0; }
