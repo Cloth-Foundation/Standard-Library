@@ -1,3 +1,8 @@
+// Part of the Cloth Standard Library project, under the Apache License v2.0
+// with LLVM Exceptions. See LICENSE.txt in the project root for license
+// information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
 /// Cloth Mathematics Library
 
 static final float64 E = 2.71828182845904523536;
@@ -404,7 +409,7 @@ static func ToDegrees(float64 radians): float64 { return radians * 180.0 / PI; }
 ///   - a: The first integer.
 ///   - b: The second integer.
 /// - Returns: The greatest common divisor of the two integers.
-static func Gcd(int32 a, int32 b): int32 {
+static func Gcd(int32 a, int32 b): int32 throws DivisionByZero {
   a = Abs(a); b = Abs(b);
   while (b != 0) { int32 remainder = a % b; a = b; b = remainder; }
   return a;
@@ -415,7 +420,7 @@ static func Gcd(int32 a, int32 b): int32 {
 ///   - a: The first integer.
 ///   - b: The second integer.
 /// - Returns: The least common multiple of the two integers. Returns 0 if either integer is 0.
-static func Lcm(int32 a, int32 b): int32 {
+static func Lcm(int32 a, int32 b): int32 throws DivisionByZero {
   if (a == 0 || b == 0) { return 0; }
   return Abs((a / Gcd(a, b)) * b);
 }
