@@ -1,0 +1,11 @@
+// Part of the Cloth Standard Library project, under the Apache License v2.0
+// with LLVM Exceptions. See LICENSE.txt in the project root for license
+// information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+/// Reports text that cannot be represented as the requested primitive value.
+error {
+  ParseError() {}
+
+  ParseError(string message): Error(message) {}
+}

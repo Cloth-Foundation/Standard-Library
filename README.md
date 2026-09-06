@@ -24,17 +24,23 @@ The package is named `cloth` and has no executable target. Its source tree
 starts directly with areas such as `src/math/`; repeating `src/cloth/` would
 create incorrect `cloth.cloth.*` identities.
 
-The package is currently version `0.2.0`. Its prelude contains the ordinary,
-extensible errors `cloth.lang.errors.ArgumentError` and
-`cloth.lang.errors.StateError`, each with default and message constructors.
+The package is currently version `0.3.0`. Its prelude contains the ordinary,
+extensible errors `cloth.lang.errors.ArgumentError`,
+`cloth.lang.errors.StateError`, `cloth.lang.errors.IoError`, and
+`cloth.lang.errors.ParseError`, each with default and message constructors.
 Public types anywhere beneath `src/lang/` are available by short name as a
 low-priority compiler fallback. Their short names must be unique across that
-tree. Other areas, including `cloth.math`, remain explicit imports.
+tree. Other areas, including `cloth.math` and `cloth.io`, remain explicit
+imports. `cloth.io.Console.ReadLine` is the first portable input API.
+Strict lowercase primitive meta operations such as `int32::parse(text)` use the
+paired source-defined `cloth.lang.errors.ParseError` and require the caller to
+cover that typed effect.
 
 See [ROADMAP.md](ROADMAP.md) for the approved order and [TODO.md](TODO.md) for
-the current work ledger. The completed coordinating contract is the compiler's
-[`stage_36_standard_library_prelude.md`](https://github.com/Cloth-Foundation/cCloth/blob/master/docs/proposals/stage_36_standard_library_prelude.md)
-proposal; Stage 35's distribution contract remains its prerequisite.
+the current work ledger. The active coordinating contract is the compiler's
+[`stage_38_text_input_and_parsing.md`](https://github.com/Cloth-Foundation/cCloth/blob/master/docs/proposals/stage_38_text_input_and_parsing.md)
+proposal; the Stage 35 distribution and Stage 36 prelude contracts remain its
+prerequisites.
 
 ## License
 

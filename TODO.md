@@ -1,7 +1,7 @@
 # Cloth standard library work ledger
 
-`ROADMAP.md` defines the allowed order. The compiler's completed Stage 36
-proposal owns the shared prelude contract.
+`ROADMAP.md` defines the allowed order. The compiler's completed Stage 38 proposal
+owns the shared text-input and primitive-parsing contract.
 
 ## Stage 35: Standard library foundation
 
@@ -55,3 +55,38 @@ proposal owns the shared prelude contract.
   deterministic package checks, documentation links, and repository gates.
 
 Stage 36 is complete.
+
+## Stage 38: Portable text input and primitive parsing
+
+- [x] Approve `cloth.io.Console`, `IoError`, and `ParseError` identities and
+  signatures, line/Unicode and parsing behavior, private bridge ownership,
+  runtime/library transitions, verification, and non-goals.
+
+  Completed with compiler 38.1 on 2026-09-06. This checkpoint changes
+  documentation only. The package remains v0.2.0 and production source is
+  unchanged pending separate 38.2 authorization.
+- [x] During 38.2, add `src/io/Console.co` and the two error declarations under
+  `src/lang/errors/`, advance the package to v0.3.0, use only the private
+  compiler-paired bridge, and verify runtime ABI-6 input/parsing status behavior.
+
+  Completed 2026-09-06. The package declarations compile for both targets,
+  preserve recursive prelude lookup for both new errors, and produce reusable
+  whole and source-free artifacts. Native `Console.ReadLine` success and
+  source-defined `IoError` propagation pass through the paired private bridge.
+- [x] During 38.3, verify explicit Console imports, recursive-prelude errors,
+  every primitive parse target and alias, whole/separate/source-free consumers,
+  both targets, native/Shuttle execution, exact reuse and invalidation, and
+  user/API documentation.
+
+  Completed 2026-09-06. The paired source-defined `ParseError` backs every
+  approved primitive and alias parse operation across whole and source-free
+  consumers, both targets, native and Shuttle execution, editor support, and
+  user documentation without changing package v0.3.0.
+- [x] Complete the coordinated 38.4 exit audit across standard-library source,
+  artifacts, Unicode, parsing, native/cross-target, determinism, consumer,
+  sanitizer, documentation, and repository quality gates.
+
+  Completed 2026-09-06. The paired v0.3.0 library passes exact invalidation,
+  reuse, whole/source-free, both-target, native, Unicode, parsing, GC,
+  determinism, consumer, documentation, sanitizer, and repository gates without
+  a package-version change.
