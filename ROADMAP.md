@@ -1,7 +1,7 @@
 # Cloth standard library roadmap
 
 This roadmap owns implementation order inside the standard-library repository.
-The compiler's Stage 35 contract owns cross-repository namespace, artifact, and
+The compiler's Stage 36 contract owns cross-repository prelude, artifact, and
 toolchain behavior. A coordinated checkpoint closes only after the compiler,
 Shuttle, and standard-library requirements pass together.
 
@@ -36,3 +36,30 @@ Deliverables:
 Stage 35 adds no console input, parsing, formatting, collections, filesystem,
 networking, prelude, registry, or package-download API. Those require later
 approved stages after this distribution boundary is complete.
+
+## Stage 36: Standard-library prelude
+
+Status: **complete — coordinated 36.4 exit audit passed 2026-09-06**
+
+Objective: establish the `cloth.lang` namespace tree as a focused, recursive
+prelude of ordinary public Cloth file types without duplicating compiler-owned
+core symbols or turning library source into intrinsics.
+
+Deliverables:
+
+1. **36.1 — Prelude contract (complete).** Approve layout, declaration
+   eligibility, lookup, ownership, compatibility, evolution, verification, and
+   non-goals.
+2. **36.2 — Prelude resolution (complete).** Coordinate compiler lookup and
+   artifact tests without adding an unapproved public library declaration.
+3. **36.3 — Initial `lang` API slice (complete, amended).** Make all public
+   types beneath `src/lang/` recursively eligible with unique short names, add
+   `ArgumentError` and `StateError` beneath `src/lang/errors/`, advance the
+   package to `0.2.0`, and verify their constructors and extensibility.
+4. **36.4 — Exit audit (complete).** Pass bootstrap, consumer, artifact,
+   native, cross-target, determinism, documentation, and repository quality
+   gates.
+
+Stage 36 is complete. The coordinated audit passes bootstrap, source-free,
+native, both-target, determinism, documentation, and repository gates with the
+production prelude's two source-defined general errors.

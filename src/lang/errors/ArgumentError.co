@@ -1,0 +1,11 @@
+// Part of the Cloth Standard Library project, under the Apache License v2.0
+// with LLVM Exceptions. See LICENSE.txt in the project root for license
+// information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+/// Reports that a caller supplied an invalid argument.
+error {
+  ArgumentError() {}
+
+  ArgumentError(string message): Error(message) {}
+}
