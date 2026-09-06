@@ -1,9 +1,9 @@
 # Cloth standard library roadmap
 
 This roadmap owns implementation order inside the standard-library repository.
-The compiler's Stage 36 contract owns cross-repository prelude, artifact, and
-toolchain behavior. A coordinated checkpoint closes only after the compiler,
-Shuttle, and standard-library requirements pass together.
+The compiler's completed Stage 38 contract owns the cross-repository text-input,
+parsing, artifact, and toolchain behavior. A coordinated checkpoint closes only
+after the compiler, Shuttle, and standard-library requirements pass together.
 
 ## Stage discipline
 
@@ -63,3 +63,34 @@ Deliverables:
 Stage 36 is complete. The coordinated audit passes bootstrap, source-free,
 native, both-target, determinism, documentation, and repository gates with the
 production prelude's two source-defined general errors.
+
+## Stage 38: Portable text input and primitive parsing
+
+Status: **complete — coordinated 38.4 exit audit passed 2026-09-06**
+
+Objective: own the source-defined `cloth.io.Console`, `IoError`, and
+`ParseError` APIs while relying on a narrow compiler-paired runtime bridge for
+operations that cannot be expressed faithfully in Cloth yet.
+
+Deliverables:
+
+1. **38.1 — Contract (complete).** Approve public identities and signatures,
+   line/Unicode and parse semantics, library/compiler/runtime ownership,
+   compatibility, verification, and non-goals without changing production
+   source.
+2. **38.2 — Library and runtime foundation (complete).** Add `src/io/Console.co`,
+   `src/lang/errors/IoError.co`, and `src/lang/errors/ParseError.co`; advance
+   the package to v0.3.0; compile through the private paired-library bridge;
+   and verify complete runtime ABI-6 input/parsing operations.
+3. **38.3 — Consumer integration (complete).** Verify all primitive parse targets,
+   prelude errors, explicit `Console` imports, whole/source-free artifacts,
+   both targets, native and Shuttle execution, exact invalidation, reuse, and
+   user/API documentation.
+4. **38.4 — Exit audit (complete).** Pass Unicode, grammar, rounding,
+   resource, GC, compatibility, determinism, consumer, documentation,
+   sanitizer, and repository quality gates.
+
+The coordinated audit closes every approved input/parsing, artifact, consumer,
+determinism, sanitizer, documentation, and repository matrix. The bridge is not
+public Cloth syntax or arbitrary FFI, and the native runtime does not own the
+source-defined error layouts. The package remains v0.3.0.

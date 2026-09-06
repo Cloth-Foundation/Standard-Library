@@ -1,0 +1,9 @@
+// Part of the Cloth Standard Library project, under the Apache License v2.0
+// with LLVM Exceptions. See LICENSE.txt in the project root for license
+// information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+/// Provides deterministic access to the process console streams.
+static func ReadLine(): string? throws IoError {
+  return __readLine();
+}
