@@ -7,3 +7,8 @@
 static func ReadLine(): string? throws IoError {
   return __readLine();
 }
+
+static func ReadLine(string prompt): string? throws IoError {
+  print(prompt);
+  return __readLine();
+}
