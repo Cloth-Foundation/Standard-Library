@@ -1,7 +1,7 @@
 # Cloth standard library work ledger
 
-`ROADMAP.md` defines the allowed order. The compiler's completed Stage 38 proposal
-owns the shared text-input and primitive-parsing contract.
+`ROADMAP.md` defines the allowed order. The compiler's completed Stage 39 proposal
+owns the shared Unicode string-traversal contract.
 
 ## Stage 35: Standard library foundation
 
@@ -90,3 +90,36 @@ Stage 36 is complete.
   reuse, whole/source-free, both-target, native, Unicode, parsing, GC,
   determinism, consumer, documentation, sanitizer, and repository gates without
   a package-version change.
+
+## Stage 39: Unicode string traversal
+
+- [x] Record that Stage 39 changes no public standard-library declaration,
+  retains `cloth` v0.3.0, rebuilds paired artifacts under format 6/runtime ABI
+  7, and preserves exact compiler/library selection.
+
+  Completed with compiler 39.1 on 2026-09-06. This checkpoint changes
+  documentation only; active compatibility remains 5/5/6 and the production
+  distribution is unchanged.
+- [x] During 39.2, rebuild and verify the unchanged source distribution under
+  artifact format 6/compiler ABI 5 across both targets, whole and source-free
+  consumers, exact reuse, and invalidation.
+
+  Completed 2026-09-06. The unchanged v0.3.0 source distribution rebuilds as
+  format-6/compiler-ABI-5/runtime-ABI-6 artifacts on both targets and passes
+  whole/source-free consumption, exact pairing, reuse, and invalidation.
+- [x] During 39.3, carry runtime ABI 7 through paired artifacts, native
+  consumers, Unicode indexing/iteration, GC, both targets, and Shuttle without
+  adding library source or changing v0.3.0.
+
+  Completed 2026-09-06. The unchanged v0.3.0 distribution rebuilds and pairs
+  under 6/5/7 for whole, separate, source-free, native, and both-target
+  consumers. Traversal remains compiler/runtime-owned; no library declaration
+  or version changed.
+- [x] Complete the coordinated 39.4 source, artifact, Unicode, traversal,
+  consumer, determinism, sanitizer, documentation, and repository quality
+  gates.
+
+  Completed 2026-09-06. Both compiler targets, native and source-free
+  consumers, exact package pairing, reuse, invalidation, determinism,
+  sanitizers, documentation, and repository gates pass with the unchanged
+  `cloth` v0.3.0 distribution under compatibility 6/5/7.
