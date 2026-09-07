@@ -1,9 +1,10 @@
 # Cloth standard library roadmap
 
 This roadmap owns implementation order inside the standard-library repository.
-The compiler's completed Stage 38 contract owns the cross-repository text-input,
-parsing, artifact, and toolchain behavior. A coordinated checkpoint closes only
-after the compiler, Shuttle, and standard-library requirements pass together.
+The compiler's completed Stage 39 contract owns the cross-repository Unicode
+scalar, artifact, runtime, and toolchain behavior. A coordinated checkpoint
+closes only after the compiler, Shuttle, and standard-library requirements pass
+together.
 
 ## Stage discipline
 
@@ -94,3 +95,32 @@ The coordinated audit closes every approved input/parsing, artifact, consumer,
 determinism, sanitizer, documentation, and repository matrix. The bridge is not
 public Cloth syntax or arbitrary FFI, and the native runtime does not own the
 source-defined error layouts. The package remains v0.3.0.
+
+## Stage 39: Unicode string traversal
+
+Status: **complete — coordinated 39.4 exit audit passed 2026-09-06**
+
+Objective: preserve the exact compiler-paired standard-library distribution as
+the compiler widens character constants and adds runtime string traversal,
+without inventing a library string wrapper or changing public source APIs.
+
+Deliverables:
+
+1. **39.1 — Contract (complete).** Record library ownership, unchanged public
+   source, artifact/runtime transitions, exact pairing, verification, and
+   non-goals.
+2. **39.2 — Scalar artifact coordination (complete).** Rebuild and verify the
+   unchanged v0.3.0 source distribution under artifact format 6 and compiler
+   ABI 5.
+3. **39.3 — Traversal coordination (complete).** Carry runtime ABI 7 through paired
+   artifacts, consumers, both targets, native execution, reuse, and
+   invalidation without adding public library declarations.
+4. **39.4 — Exit audit (complete).** Pass source, artifact, Unicode, traversal,
+   consumer, determinism, documentation, sanitizer, and repository quality
+   gates.
+
+Stage 39 carries the unchanged package under artifact/compiler/runtime 6/5/7.
+The coordinated 39.4 source, artifact, traversal, consumer, determinism,
+sanitizer, and repository matrices pass. The package remains v0.3.0. Stage 39
+adds no normal string methods, wrapper type, slicing, collection API, or public
+bridge.
