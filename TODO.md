@@ -1,7 +1,7 @@
 # Cloth standard library work ledger
 
-`ROADMAP.md` defines the allowed order. The compiler's completed Stage 41 proposal
-owns the shared uniform-nullability contract.
+`ROADMAP.md` defines the allowed order. The compiler's completed Stage 42 proposal
+owns the shared runtime-sized fixed-array and bootstrap contract.
 
 ## Stage 35: Standard library foundation
 
@@ -155,6 +155,40 @@ Stage 36 is complete.
   format-7 artifacts, exact selection, both targets, native and source-free
   consumers, reuse, invalidation, determinism, sanitizer, documentation, and
   repository gates without adding a public declaration.
+
+## Stage 42: Runtime-sized fixed-array coordination
+
+- [x] Record that runtime-sized fixed-array construction remains
+  compiler/runtime-owned, adds no public standard-library declaration, retains
+  `cloth` v0.3.0 and compatibility 7/6/9, and preserves exact compiler/library
+  selection.
+
+  Completed with compiler 42.1 on 2026-09-07. This documentation-only
+  checkpoint leaves production source, package version, artifacts, and runtime
+  behavior unchanged.
+- [x] During 42.2, verify the unchanged distribution while compiler frontend
+  and IR work remains internal and no partial library feature is published.
+
+  Completed with compiler 42.2 on 2026-09-08. The `cloth` v0.3.0 source tree,
+  public declarations, and exact compiler pairing remain unchanged; the
+  compiler owns both runtime-sized construction and its 42.3 publication gate.
+- [x] During 42.3, verify the unchanged source distribution under 7/6/9 across
+  both targets, native, packages, source-free consumers, exact reuse,
+  invalidation, and the `F:\Cloth` token-buffer smoke path.
+
+  Completed with compiler 42.3 on 2026-09-08. The unchanged v0.3.0 source
+  distribution passes both targets, native and source-free consumers,
+  deterministic package scheduling, exact reuse, affected invalidation, and
+  bootstrap Shuttle integration without adding a public array API.
+- [x] Complete the coordinated 42.4 source, artifact, runtime-sized array,
+  bootstrap, consumer, determinism, sanitizer, documentation, and repository
+  quality gates.
+
+  Completed with compiler 42.4 on 2026-09-08. The unchanged v0.3.0 source
+  distribution passes both compiler configurations, both targets, native and
+  source-free consumers, distinct-root deterministic builds, exact reuse,
+  affected invalidation, bootstrap verification, documentation, and repository
+  gates without adding a public declaration or changing compatibility.
 
 ## Stage 39: Unicode string traversal
 
