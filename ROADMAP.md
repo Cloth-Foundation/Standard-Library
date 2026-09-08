@@ -1,8 +1,8 @@
 # Cloth standard library roadmap
 
 This roadmap owns implementation order inside the standard-library repository.
-The compiler's completed Stage 39 contract owns the cross-repository Unicode
-scalar, artifact, runtime, and toolchain behavior. A coordinated checkpoint
+The compiler's completed Stage 41 contract owns cross-repository uniform
+nullability, ABI, runtime, and toolchain behavior. A coordinated checkpoint
 closes only after the compiler, Shuttle, and standard-library requirements pass
 together.
 
@@ -95,6 +95,70 @@ The coordinated audit closes every approved input/parsing, artifact, consumer,
 determinism, sanitizer, documentation, and repository matrix. The bridge is not
 public Cloth syntax or arbitrary FFI, and the native runtime does not own the
 source-defined error layouts. The package remains v0.3.0.
+
+## Stage 40: Unicode string slicing
+
+Status: **complete — coordinated 40.4 exit audit passed 2026-09-07**
+
+Objective: preserve the exact compiler-paired standard-library distribution as
+the compiler adds intrinsic Unicode-scalar string slicing and runtime ABI 8,
+without adding a library string wrapper or public source declaration.
+
+Deliverables:
+
+1. **40.1 — Contract (complete).** Record unchanged public source and package
+   version, intrinsic/compiler/runtime ownership, the runtime-ABI-8 transition,
+   exact pairing, verification, and non-goals.
+2. **40.2 — Compiler coordination (complete).** Retain the unchanged
+   distribution while semantic and verified compiler IR work proceeds without
+   a public library API or separately releasable partial feature.
+3. **40.3 — Runtime/toolchain coordination (complete).** Rebuild and verify
+   v0.3.0 under artifact/compiler/runtime 6/5/8 across both targets, native,
+   packages, source-free consumers, reuse, and invalidation.
+4. **40.4 — Exit audit (complete).** Pass source, artifact, slicing, consumer,
+   determinism, documentation, sanitizer, and repository quality gates.
+
+Checkpoint 40.3 advances compatibility to 6/5/8 while the package remains
+v0.3.0. The unchanged distribution builds for both targets and is selected
+exactly for native and source-free slicing consumers. Stage 40 adds no normal
+string method, wrapper, range, view, slicing declaration, or public bridge.
+
+The coordinated 40.4 audit closes source, artifact, both-target, native,
+source-free, exact-selection, reuse, invalidation, determinism, sanitizer,
+documentation, and repository gates. The unchanged package remains v0.3.0.
+
+## Stage 41: Uniform-nullability coordination
+
+Status: **complete — coordinated 41.4 exit audit passed 2026-09-07**
+
+Objective: preserve the exact compiler-paired standard-library distribution as
+the compiler adds tagged nullable values, safe instance calls, and safe meta
+queries, without introducing a public wrapper, option type, or library
+declaration.
+
+Deliverables:
+
+1. **41.1 — Contract (complete).** Record unchanged public source and package
+   version, compiler/runtime ownership, the planned 7/6/9 transition, exact
+   pairing, verification, and non-goals.
+2. **41.2 — Compiler coordination (complete).** Retain the unchanged distribution while
+   frontend and verified compiler IR work proceeds without a public library API
+   or separately releasable partial feature.
+3. **41.3 — Toolchain coordination (complete).** Rebuild and verify v0.3.0 under
+   artifact/compiler/runtime 7/6/9 across both targets, native, packages,
+   source-free consumers, reuse, and invalidation.
+4. **41.4 — Exit audit (complete).** Pass source, artifact, nullable-value,
+   consumer, determinism, documentation, sanitizer, and repository quality
+   gates.
+
+Checkpoint 41.3 rebuilds and verifies the unchanged distribution under 7/6/9
+for both targets, native and source-free consumers, exact reuse, and affected
+invalidation. The package remains v0.3.0. Stage 41 adds no standard-library
+source, wrapper, option type, safe-operation declaration, or public bridge.
+
+The coordinated 41.4 audit closes source, artifact, nullable-value, consumer,
+both-target, native, source-free, determinism, sanitizer, documentation, and
+repository gates. The distribution remains unchanged at v0.3.0.
 
 ## Stage 39: Unicode string traversal
 
