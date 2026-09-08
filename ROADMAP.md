@@ -1,10 +1,9 @@
 # Cloth standard library roadmap
 
 This roadmap owns implementation order inside the standard-library repository.
-The compiler's completed Stage 41 contract owns cross-repository uniform
-nullability, ABI, runtime, and toolchain behavior. A coordinated checkpoint
-closes only after the compiler, Shuttle, and standard-library requirements pass
-together.
+The compiler's completed Stage 42 contract owns cross-repository runtime-sized
+fixed-array and bootstrap behavior. A coordinated checkpoint closes only after
+the compiler, Shuttle, and standard-library requirements pass together.
 
 ## Stage discipline
 
@@ -159,6 +158,48 @@ source, wrapper, option type, safe-operation declaration, or public bridge.
 The coordinated 41.4 audit closes source, artifact, nullable-value, consumer,
 both-target, native, source-free, determinism, sanitizer, documentation, and
 repository gates. The distribution remains unchanged at v0.3.0.
+
+## Stage 42: Runtime-sized fixed-array coordination
+
+Status: **complete — coordinated 42.4 exit audit passed 2026-09-08**
+
+Objective: preserve the exact compiler-paired standard-library distribution as
+the compiler adds `T[:length]` construction and the first bootstrap token-buffer
+consumer, without introducing a collection wrapper or public declaration.
+
+Deliverables:
+
+1. **42.1 — Contract (complete).** Record unchanged public source and package
+   version, compiler/runtime ownership, planned unchanged 7/6/9 compatibility,
+   exact pairing, bootstrap verification, and non-goals.
+2. **42.2 — Compiler coordination (complete).** Retain the unchanged
+   distribution while frontend and verified compiler IR work proceeds without
+   a public library API or separately releasable partial feature.
+3. **42.3 — Toolchain and bootstrap coordination (complete).** Verify v0.3.0
+   under artifact/compiler/runtime 7/6/9 across both targets, native, packages,
+   source-free consumers, reuse, invalidation, and the `F:\Cloth` token-buffer
+   smoke path.
+4. **42.4 — Exit audit (complete).** Pass source, artifact, runtime-sized array,
+   bootstrap, consumer, determinism, documentation, sanitizer, and repository
+   quality gates.
+
+Stage 42 adds no standard-library source, collection type, defaulting helper,
+runtime bridge, manifest change, or version increase. Checkpoint 42.3 required
+no public library boundary.
+
+Checkpoint 42.2 completed on 2026-09-08 without changing the `cloth` v0.3.0
+source distribution. Runtime-sized construction and its release gate remain
+compiler-owned; no standard-library declaration or wrapper was introduced.
+
+Checkpoint 42.3 verifies the unchanged distribution through both targets,
+native and source-free consumers, deterministic Shuttle builds, and the real
+bootstrap project. Runtime-sized allocation remains compiler/runtime-owned;
+the standard library still adds no declaration, helper, or version change.
+
+The coordinated 42.4 audit passes the unchanged distribution through every
+source, artifact, native, source-free, both-target, deterministic-build,
+sanitizer, bootstrap, documentation, and repository gate. The package remains
+v0.3.0 and adds no array declaration or runtime bridge.
 
 ## Stage 39: Unicode string traversal
 
