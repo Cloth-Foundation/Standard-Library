@@ -1,7 +1,7 @@
 # Cloth standard library work ledger
 
-`ROADMAP.md` defines the allowed order. The compiler's completed Stage 39 proposal
-owns the shared Unicode string-traversal contract.
+`ROADMAP.md` defines the allowed order. The compiler's completed Stage 41 proposal
+owns the shared uniform-nullability contract.
 
 ## Stage 35: Standard library foundation
 
@@ -90,6 +90,71 @@ Stage 36 is complete.
   reuse, whole/source-free, both-target, native, Unicode, parsing, GC,
   determinism, consumer, documentation, sanitizer, and repository gates without
   a package-version change.
+
+## Stage 40: Unicode string slicing
+
+- [x] Record that slicing remains compiler/runtime-owned, adds no public
+  standard-library declaration, retains `cloth` v0.3.0, advances only runtime
+  ABI 7 to 8 during 40.3, and preserves exact compiler/library selection.
+
+  Completed with compiler 40.1 on 2026-09-06. This checkpoint changes
+  documentation only; active compatibility remains 6/5/7 and the production
+  distribution is unchanged.
+- [x] During 40.2, verify the unchanged distribution while compiler semantic
+  and IR work remains internal and no partial library feature is published.
+
+  Completed with compiler 40.2 on 2026-09-06. The v0.3.0 source distribution
+  is unchanged, frontend and coordinated suites pass, and native slicing
+  remains unavailable until the compiler/runtime transition in 40.3.
+- [x] During 40.3, rebuild and verify the unchanged source distribution under
+  runtime ABI 8 across both targets, native and source-free consumers, exact
+  reuse, and invalidation.
+
+  Completed with compiler 40.3 on 2026-09-07. The unchanged v0.3.0 source
+  distribution rebuilds under artifact/compiler/runtime 6/5/8 for x86-64 and
+  wasm32. Native, whole, separate, source-free, reuse, invalidation, and exact
+  compiler/library-selection coverage passes without adding a library API.
+- [x] Complete the coordinated 40.4 source, artifact, slicing, consumer,
+  determinism, sanitizer, documentation, and repository quality gates.
+
+  Completed with compiler 40.4 on 2026-09-07. The unchanged v0.3.0 package
+  passes source, artifact, both-target, native, source-free, exact-selection,
+  reuse, invalidation, determinism, sanitizer, documentation, and repository
+  gates without adding a public declaration or changing compatibility.
+
+## Stage 41: Uniform-nullability coordination
+
+- [x] Record that nullable values and safe operations remain
+  compiler/runtime-owned, add no public standard-library declaration, retain
+  `cloth` v0.3.0, plan the artifact/compiler/runtime 7/6/9 transition, and
+  preserve exact compiler/library selection.
+
+  Completed with compiler 41.1 on 2026-09-07. This checkpoint changes
+  documentation only; compatibility remains 6/5/8 and the production
+  distribution is unchanged.
+- [x] During 41.2, verify the unchanged distribution while compiler frontend
+  and IR work remains internal and no partial library feature is published.
+
+  Completed with compiler 41.2 on 2026-09-07. Development and sanitizer
+  configurations each pass all 312 compiler CTests while the native/artifact
+  gate prevents partial publication. Standard-library source, `cloth` v0.3.0,
+  and compatibility 6/5/8 remain unchanged.
+- [x] During 41.3, rebuild and verify the unchanged source distribution under
+  artifact/compiler/runtime 7/6/9 across both targets, native and source-free
+  consumers, exact reuse, and invalidation.
+
+  Completed with compiler 41.3 on 2026-09-07. The unchanged v0.3.0 source
+  distribution rebuilds under 7/6/9 for x86-64 and wasm32 and passes native,
+  package, source-free, exact-reuse, and affected-invalidation coverage. No
+  public standard-library declaration was added.
+- [x] Complete the coordinated 41.4 source, artifact, nullable-value, consumer,
+  determinism, sanitizer, documentation, and repository quality gates.
+
+  Completed with compiler 41.4 on 2026-09-07. Both 335-test compiler
+  configurations pass the unchanged v0.3.0 distribution through source,
+  format-7 artifacts, exact selection, both targets, native and source-free
+  consumers, reuse, invalidation, determinism, sanitizer, documentation, and
+  repository gates without adding a public declaration.
 
 ## Stage 39: Unicode string traversal
 
