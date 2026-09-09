@@ -11,9 +11,11 @@ reserved as `cloth`, with imports such as:
 import cloth.math::Math;
 ```
 
-The compiler continues to own primitives, `object`, `Error`,
-`DivisionByZero`, memory management, and physical ABI behavior. Reusable APIs
-that can be implemented faithfully in Cloth belong here.
+The library owns the canonical `cloth.lang.Object` declaration and the public
+primitive-wrapper hierarchy. The compiler and runtime own primitive storage,
+boxing layout, `Error`, `DivisionByZero`, memory management, and physical ABI
+behavior. Reusable APIs that can be implemented faithfully in Cloth belong
+here.
 
 ## Repository state
 
@@ -24,7 +26,7 @@ The package is named `cloth` and has no executable target. Its source tree
 starts directly with areas such as `src/math/`; repeating `src/cloth/` would
 create incorrect `cloth.cloth.*` identities.
 
-The package is currently version `0.4.0`. Its prelude contains the ordinary,
+The package is currently version `0.5.0`. Its prelude contains the ordinary,
 extensible errors `cloth.lang.errors.ArgumentError`,
 `cloth.lang.errors.StateError`, `cloth.lang.errors.IoError`, and
 `cloth.lang.errors.ParseError`, each with default and message constructors.
@@ -38,10 +40,16 @@ Strict lowercase primitive meta operations such as `int32::parse(text)` use the
 paired source-defined `cloth.lang.errors.ParseError` and require the caller to
 cover that typed effect.
 
+`cloth.lang.Object` supplies `Equals`, `HashCode`, and `ToString`. The abstract
+`Number`, `Integer`, and `FloatingPoint` types organize the sealed `Byte`,
+signed and unsigned integer, and floating wrappers. `Boolean` and `Character`
+derive directly from Object. Ordinary values remain unboxed until converted to
+`object` or `object?`.
+
 See [ROADMAP.md](ROADMAP.md) for the approved order and [TODO.md](TODO.md) for
 the current work ledger. The active coordinating contract is the compiler's
-[`stage_43_file_bytes_and_source.md`](https://github.com/Cloth-Foundation/cCloth/blob/master/docs/proposals/stage_43_file_bytes_and_source.md)
-proposal; the Stage 35 distribution and Stage 36 prelude contracts remain its
+[`stage_45_5_object_representation.md`](https://github.com/Cloth-Foundation/cCloth/blob/master/docs/proposals/stage_45_5_object_representation.md)
+proposal; the Stage 35 distribution and Stage 36 prelude contracts remain
 prerequisites.
 
 ## License

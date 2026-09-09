@@ -1,0 +1,20 @@
+// Part of the Cloth Standard Library project, under the Apache License v2.0
+// with LLVM Exceptions. See LICENSE.txt in the project root for license
+// information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+class {
+  Object () {}
+
+  func Equals (Object? other): bool {
+    return __objectEquals(self, other);
+  }
+
+  func HashCode (): uint64 {
+    return __objectHashCode(self);
+  }
+
+  func ToString (): string {
+    return __objectToString(self);
+  }
+}
