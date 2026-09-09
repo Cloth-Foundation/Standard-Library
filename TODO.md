@@ -1,7 +1,67 @@
 # Cloth standard library work ledger
 
-`ROADMAP.md` defines the allowed order. The compiler's completed Stage 42 proposal
-owns the shared runtime-sized fixed-array and bootstrap contract.
+`ROADMAP.md` defines the allowed order. The compiler's active Stage 44 contract
+owns self-hosted lexer behavior; the standard library remains a file-byte input
+dependency only.
+
+## Stage 44: Self-hosted lexer coordination
+
+- [x] Record that source spans, cursor rules, tokens, lexical diagnostics, and
+  parity records remain bootstrap-owned; retain `File.ReadBytes`, `cloth`
+  v0.4.0, compatibility 7/6/10, and schemas 2/1/1/1 without adding a public
+  source or text-decoding API.
+
+  Completed with compiler 44.1 on 2026-09-08. Production library source and
+  metadata are unchanged. Later lexer checkpoints remain separately
+  authorized.
+- [x] During 44.2, verify the unchanged library with both-target, native,
+  source-free, exact-reuse, invalidation, and scanner-foundation consumers.
+
+  Completed with compiler 44.2 on 2026-09-08. The unchanged v0.4.0 library
+  supplies exact file bytes to both-target and development/sanitizer native
+  lexer consumers without adding a source, token, or text-decoding API.
+- [x] During 44.3, verify the unchanged library with complete lexer and
+  malformed-input consumers without interpreting source bytes.
+
+  Completed with compiler 44.3 on 2026-09-08. The unchanged v0.4.0 library
+  supplies exact file bytes to complete both-target and development/sanitizer
+  native lexer consumers. Malformed in-memory bytes remain bootstrap-owned; no
+  source, token, decoder, diagnostic, or lexer API was added to `cloth.*`.
+- [ ] Complete the coordinated 44.4 source, artifact, bootstrap, determinism,
+  sanitizer, documentation, and repository gates.
+
+## Stage 43: Portable file-byte coordination
+
+- [x] Record `std/src/io/File.co` as owner of
+  `File.ReadBytes(string): byte[] throws IoError`, including exact bytes, the
+  64 MiB limit, private compiler bridge, existing error identity, planned
+  runtime ABI 10 and v0.4.0 transition, and non-goals.
+
+  Completed with compiler 43.1 on 2026-09-08. At that checkpoint, production
+  source and package metadata remained at v0.3.0 and compatibility 7/6/9,
+  2/1/1/1.
+- [x] During 43.2, add `src/io/File.co`, advance the package to v0.4.0, and
+  verify the public declaration, typed effect, canonical private bridge, exact
+  package selection, both targets, native and source-free consumers, reuse,
+  invalidation, and failed-output preservation.
+
+  Completed with compiler 43.2 on 2026-09-08. The v0.4.0 distribution and
+  runtime ABI 10 pass declaration, effect, bridge-isolation, both-target,
+  native, source-free, exact reuse, and failure-preservation coverage.
+- [x] During 43.3, verify `File.ReadBytes` with the bootstrap-owned
+  `frontend.source::SourceFile` consumer without adding source or lexer policy
+  to the standard library.
+
+  Completed with compiler 43.3 on 2026-09-08. The unchanged v0.4.0 API passes
+  real bootstrap, direct, both-target, native, sanitizer, source-free, reuse,
+  and failure-preservation checks without adding compiler policy to the library.
+- [x] Complete the coordinated 43.4 platform, source, artifact, runtime,
+  bootstrap, determinism, sanitizer, documentation, and repository gates.
+
+  Completed with compiler 43.4 on 2026-09-08. The unchanged v0.4.0 library
+  passes exact path/byte/bound, typed-effect, private-bridge, malformed-state,
+  native, both-target, source-free, package-determinism, bootstrap, sanitizer,
+  documentation, and repository coverage.
 
 ## Stage 35: Standard library foundation
 
