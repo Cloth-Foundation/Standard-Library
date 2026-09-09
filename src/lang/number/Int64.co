@@ -1,0 +1,29 @@
+// Part of the Cloth Standard Library project, under the Apache License v2.0
+// with LLVM Exceptions. See LICENSE.txt in the project root for license
+// information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+sealed class: Integer {
+  static final int64 MIN_VALUE = -9223372036854775808i64;
+  static final int64 MAX_VALUE = 9223372036854775807i64;
+  static final int32 BYTES = 8;
+  static final int32 BITS = 64;
+
+  final int64 value;
+
+  Int64 (int64 value): Integer() {
+    self.value = value;
+  }
+
+  override func Equals (Object? other): bool {
+    return __valueBoxEquals(self, other);
+  }
+
+  override func HashCode (): uint64 {
+    return __valueBoxHashCode(self);
+  }
+
+  override func ToString (): string {
+    return __valueBoxToString(self);
+  }
+}

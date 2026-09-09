@@ -1,8 +1,45 @@
 # Cloth standard library work ledger
 
-`ROADMAP.md` defines the allowed order. The compiler's active Stage 44 contract
-owns self-hosted lexer behavior; the standard library remains a file-byte input
-dependency only.
+`ROADMAP.md` defines the allowed order. The compiler's Stage 45.5 universal
+Object and value-wrapper boundary is complete.
+
+## Stage 45.5: Universal Object coordination
+
+- [x] Approve the exact `Object` surface, lowercase alias relationship,
+  wrapper hierarchy, equality/hash/string contracts, ownership split, planned
+  v0.5.0 release, compatibility transition, and non-goals.
+
+  Completed with compiler 45.5a on 2026-09-09. The pre-existing untracked
+  `Object`, `Number`, and `Byte` drafts are intentionally not published: they
+  fail the v0.4.0 package check and their placeholder hash/string/conversion
+  behavior violates the approved contract.
+- [x] During 45.5b, replace the Object draft with the exact compiler-paired
+  declaration and verify root dispatch for classes, errors, strings, arrays,
+  interfaces, direct builds, and source-free consumers.
+
+  Completed with compiler 45.5b on 2026-09-09. `Object.co` now owns the exact
+  `Equals(Object?)`, `HashCode(): uint64`, and `ToString(): string` surface and
+  reaches only identity-checked private bridges. The compiler and runtime bind
+  that surface to implicit ancestry and uniform managed virtual slots. Focused
+  whole-project and source-free consumers pass on x86-64 and wasm32; numeric
+  draft failures remain isolated to 45.5c.
+- [x] During 45.5c, replace the numeric drafts with `Number`, `Integer`,
+  `FloatingPoint`, `Byte`, `Int8` through `Int64`, `UInt8` through `UInt64`,
+  `Float32`, `Float64`, `Boolean`, and `Character`; publish only with complete
+  boxing/unboxing, payload behavior, tests, and the v0.5.0 transition.
+
+  Completed with compiler 45.5c on 2026-09-09. The exact sealed wrapper
+  hierarchy, payload fields, constructors, constants, and Object overrides are
+  published as `cloth` v0.5.0 and validated from source and format-8 artifacts
+  on x86-64 and wasm32.
+- [x] Complete the coordinated 45.5d source, hash/equality, representation,
+  GC, artifact, native, cross-target, source-free, Shuttle, bootstrap,
+  determinism, sanitizer, documentation, and repository gates.
+
+  Completed with compiler 45.5d on 2026-09-09. Exact source and format-8
+  consumers, x86-64 and wasm32 checks, native value behavior, compiler-backed
+  Shuttle runs, sanitized compilation, documentation, and repository quality
+  gates pass for the complete `cloth` v0.5.0 distribution.
 
 ## Stage 44: Self-hosted lexer coordination
 
@@ -27,8 +64,12 @@ dependency only.
   supplies exact file bytes to complete both-target and development/sanitizer
   native lexer consumers. Malformed in-memory bytes remain bootstrap-owned; no
   source, token, decoder, diagnostic, or lexer API was added to `cloth.*`.
-- [ ] Complete the coordinated 44.4 source, artifact, bootstrap, determinism,
+- [x] Complete the coordinated 44.4 source, artifact, bootstrap, determinism,
   sanitizer, documentation, and repository gates.
+
+  Completed with compiler 44.4 on 2026-09-08. Exact v0.4.0 selection,
+  source-free use, deterministic lexer parity, sanitizer, documentation, and
+  repository gates passed without a standard-library API change.
 
 ## Stage 43: Portable file-byte coordination
 

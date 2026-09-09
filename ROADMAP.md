@@ -1,9 +1,8 @@
 # Cloth standard library roadmap
 
 This roadmap owns implementation order inside the standard-library repository.
-The compiler's completed Stage 43 contract owns cross-repository portable
-file-byte and bootstrap source behavior. Stage 44 uses that API for
-self-hosted lexing without adding a standard-library text or token API.
+The compiler's completed Stage 45.5 contract owns the universal Object boundary
+used by subsequent self-hosted compiler work.
 
 ## Stage discipline
 
@@ -12,9 +11,37 @@ Public APIs require an approved source contract, tests, documentation, and
 explicit implementation authorization. A placeholder directory or proposed API
 does not make that API supported.
 
+## Stage 45.5: Universal Object coordination
+
+Status: **complete — coordinated 45.5d exit audit passed 2026-09-09**
+
+Objective: make `cloth.lang.Object` and the primitive wrapper hierarchy the
+source-owned public face of the compiler/runtime object model without exposing
+layout, addresses, collector state, or unverified intrinsic access.
+
+Deliverables:
+
+1. **45.5a — Contract (complete).** Record exact declarations, hierarchy,
+   equality, hashing, representation, compiler/runtime ownership, planned
+   v0.5.0 selection, compatibility, and non-goals.
+2. **45.5b — Root coordination (complete).** Publish the validated `Object`
+   declaration only with compiler root binding and complete managed-descriptor
+   dispatch.
+3. **45.5c — Wrapper coordination (complete).** Publish `Number`, `Integer`,
+   `FloatingPoint`, all concrete numeric wrappers, `Boolean`, and `Character`
+   only with verified boxing/unboxing and runtime value behavior.
+4. **45.5d — Exit audit (complete).** Close exact selection, source-free use, both targets,
+   native execution, GC, equality/hash, printing, bootstrap, determinism,
+   sanitizer, documentation, and repository gates.
+
+The complete Object and primitive-wrapper surface is now published as the
+compiler-paired `cloth` v0.5.0 distribution. Exact declaration validation,
+source-free consumers, and both targets use coordinated
+artifact/compiler/runtime 8/7/11.
+
 ## Stage 44: Self-hosted lexer coordination
 
-Status: **active — coordinated 44.3 literal completion complete 2026-09-08**
+Status: **complete — coordinated 44.4 exit audit passed 2026-09-08**
 
 Objective: preserve the exact compiler-paired `cloth` v0.4.0 distribution while
 the bootstrap consumes `File.ReadBytes` through its own source and lexer types.
@@ -28,12 +55,14 @@ Deliverables:
    both-target and native scanner-foundation consumers.
 3. **44.3 — Literal coordination (complete).** Verify the unchanged
    distribution with the complete bootstrap lexer and malformed source inputs.
-4. **44.4 — Exit audit.** Close exact selection, source-free, deterministic,
+4. **44.4 — Exit audit (complete).** Close exact selection, source-free, deterministic,
    sanitizer, documentation, and repository gates.
 
 Compatibility remains artifact/compiler/runtime 7/6/10, schemas 2/1/1/1, and
 `cloth` v0.4.0. Stage 44 adds no byte-to-string conversion, text decoder,
 source abstraction, token type, diagnostic type, or lexer helper to `cloth.*`.
+The coordinated exit audit passed with the complete bootstrap lexer and exact
+standard-library selection.
 
 ## Stage 43: Portable file-byte coordination
 
