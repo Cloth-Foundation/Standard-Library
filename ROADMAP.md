@@ -1,9 +1,9 @@
 # Cloth standard library roadmap
 
 This roadmap owns implementation order inside the standard-library repository.
-The compiler's completed Stage 42 contract owns cross-repository runtime-sized
-fixed-array and bootstrap behavior. A coordinated checkpoint closes only after
-the compiler, Shuttle, and standard-library requirements pass together.
+The compiler's completed Stage 43 contract owns cross-repository portable
+file-byte and bootstrap source behavior. Stage 44 uses that API for
+self-hosted lexing without adding a standard-library text or token API.
 
 ## Stage discipline
 
@@ -11,6 +11,64 @@ Only work authorized by the active compiler stage enters the standard library.
 Public APIs require an approved source contract, tests, documentation, and
 explicit implementation authorization. A placeholder directory or proposed API
 does not make that API supported.
+
+## Stage 44: Self-hosted lexer coordination
+
+Status: **active — coordinated 44.3 literal completion complete 2026-09-08**
+
+Objective: preserve the exact compiler-paired `cloth` v0.4.0 distribution while
+the bootstrap consumes `File.ReadBytes` through its own source and lexer types.
+
+Deliverables:
+
+1. **44.1 — Contract (complete).** Record that tokens, spans, cursor rules,
+   lexical diagnostics, and parity tests remain bootstrap-owned and add no
+   public standard-library API.
+2. **44.2 — Foundation coordination (complete).** Verify the unchanged distribution with
+   both-target and native scanner-foundation consumers.
+3. **44.3 — Literal coordination (complete).** Verify the unchanged
+   distribution with the complete bootstrap lexer and malformed source inputs.
+4. **44.4 — Exit audit.** Close exact selection, source-free, deterministic,
+   sanitizer, documentation, and repository gates.
+
+Compatibility remains artifact/compiler/runtime 7/6/10, schemas 2/1/1/1, and
+`cloth` v0.4.0. Stage 44 adds no byte-to-string conversion, text decoder,
+source abstraction, token type, diagnostic type, or lexer helper to `cloth.*`.
+
+## Stage 43: Portable file-byte coordination
+
+Status: **complete — coordinated 43.4 exit audit passed 2026-09-08**
+
+Objective: add the bounded `cloth.io::File.ReadBytes(string): byte[] throws
+IoError` surface through the existing compiler-paired distribution while
+keeping native I/O, bootstrap source meaning, and package coordination in their
+own layers.
+
+Deliverables:
+
+1. **43.1 — Contract (complete).** Record the exact public declaration,
+   `std/src/io/File.co` ownership, existing `IoError`, private bridge, 64 MiB
+   bound, planned version/ABI transition, documentation, and non-goals.
+2. **43.2 — File foundation (complete).** Add `File.co`, advance `cloth` to
+   v0.4.0 with runtime ABI 10, and verify declarations, effects, private bridge,
+   exact package identity, reuse, invalidation, and source-free consumers.
+3. **43.3 — Bootstrap coordination (complete).** Verify the unchanged public API
+   against the real `F:\Cloth` `SourceFile` consumer without adding a compiler
+   concept to the library.
+4. **43.4 — Exit audit (complete).** Close source, artifact, native,
+   cross-platform, source-free, determinism, failure-preservation, sanitizer,
+   documentation, and repository gates.
+
+Checkpoint 43.2 advances the active package to v0.4.0 and runtime ABI 10.
+Artifact format 7, compiler ABI 6, and schemas 2/1/1/1 remain unchanged.
+The coordinated exit audit passes exact paths, bytes, bounds, typed failures,
+resources, GC, malformed state, both targets, native/source-free consumers,
+package determinism, the real bootstrap, and all repository gates.
+
+The standard library owns the public `File.ReadBytes` declaration and reuses
+`cloth.lang.errors::IoError`. It does not own native handles, runtime status
+codes, compiler source locations, text decoding, paths as a data type, streams,
+writes, directories, or bootstrap tokenization.
 
 ## Stage 35: Standard library foundation
 
