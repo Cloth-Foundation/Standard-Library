@@ -11,6 +11,27 @@ Public APIs require an approved source contract, tests, documentation, and
 explicit implementation authorization. A placeholder directory or proposed API
 does not make that API supported.
 
+## Stage 49.4: Frontend authority audit coordination
+
+Status: **complete — coordinated 2026-09-10**
+
+The complete self-hosted source graph passes x86-64 and wasm32 checking with
+the paired `cloth` v0.6.0 distribution under development and Clang ASan/UBSan
+bootstrap compilers. The authority transfer changes no standard-library source,
+package identity, or compatibility boundary.
+
+## Stage 49.3: Standard-error coordination
+
+Status: **complete — coordinated 2026-09-10**
+
+The self-hosted diagnostic renderer requires a public standard-error boundary
+that does not redirect compiler diagnostics through ordinary program output.
+`Console.WriteError(string)` and `Console.WriteErrorLine(string)` are backed by
+one identity-checked private intrinsic. The paired distribution advances to
+`cloth` v0.6.0 and runtime ABI 12; artifact format 8, compiler ABI 7, and schemas
+2/1/1/1 remain unchanged. Rich diagnostic presentation is compiler-owned and
+does not become a Console policy.
+
 ## Stage 45.5: Universal Object coordination
 
 Status: **complete — coordinated 45.5d exit audit passed 2026-09-09**
