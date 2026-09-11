@@ -12,3 +12,13 @@ static func ReadLine(string prompt): string? throws IoError {
   print(prompt);
   return __readLine();
 }
+
+/// Writes `value` to the process standard-error stream.
+static func WriteError(string value): void {
+  __writeError(value);
+}
+
+/// Writes `value` and a line terminator to the process standard-error stream.
+static func WriteErrorLine(string value): void {
+  __writeError(value + "\n");
+}

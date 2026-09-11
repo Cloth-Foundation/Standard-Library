@@ -26,14 +26,16 @@ The package is named `cloth` and has no executable target. Its source tree
 starts directly with areas such as `src/math/`; repeating `src/cloth/` would
 create incorrect `cloth.cloth.*` identities.
 
-The package is currently version `0.5.0`. Its prelude contains the ordinary,
+The package is currently version `0.6.0`. Its prelude contains the ordinary,
 extensible errors `cloth.lang.errors.ArgumentError`,
 `cloth.lang.errors.StateError`, `cloth.lang.errors.IoError`, and
 `cloth.lang.errors.ParseError`, each with default and message constructors.
 Public types anywhere beneath `src/lang/` are available by short name as a
 low-priority compiler fallback. Their short names must be unique across that
 tree. Other areas, including `cloth.math` and `cloth.io`, remain explicit
-imports. `cloth.io.Console.ReadLine` is the first portable input API.
+imports. `cloth.io.Console.ReadLine` provides portable line input.
+`Console.WriteError` and `Console.WriteErrorLine` provide deterministic
+standard-error output.
 `cloth.io.File.ReadBytes` performs bounded, exact binary reads of regular
 files.
 Strict lowercase primitive meta operations such as `int32::parse(text)` use the
@@ -47,10 +49,10 @@ derive directly from Object. Ordinary values remain unboxed until converted to
 `object` or `object?`.
 
 See [ROADMAP.md](ROADMAP.md) for the approved order and [TODO.md](TODO.md) for
-the current work ledger. The active coordinating contract is the compiler's
-[`stage_45_5_object_representation.md`](https://github.com/Cloth-Foundation/cCloth/blob/master/docs/proposals/stage_45_5_object_representation.md)
-proposal; the Stage 35 distribution and Stage 36 prelude contracts remain
-prerequisites.
+the current work ledger. The latest coordinating contract is the compiler's
+[`stage_49_self_hosted_frontend_authority.md`](https://github.com/Cloth-Foundation/cCloth/blob/master/docs/proposals/stage_49_self_hosted_frontend_authority.md)
+proposal. The Stage 35 distribution, Stage 36 prelude, and Stage 45.5 Object
+contracts remain prerequisites.
 
 ## License
 

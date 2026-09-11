@@ -3,6 +3,25 @@
 `ROADMAP.md` defines the allowed order. The compiler's Stage 45.5 universal
 Object and value-wrapper boundary is complete.
 
+## Stage 49.4: Frontend authority audit coordination
+
+- [x] Verify the complete self-hosted compiler source graph against the exact
+  `cloth` v0.6.0 distribution on x86-64 and wasm32 with development and Clang
+  ASan/UBSan bootstrap compilers.
+
+  Completed 2026-09-10 without a standard-library source or compatibility
+  change.
+
+## Stage 49.3: Standard-error coordination
+
+- [x] Publish `Console.WriteError(string)` and
+  `Console.WriteErrorLine(string)` through an identity-checked private bridge;
+  verify public declarations, native lowering, bridge isolation, runtime
+  failure handling, paired selection, and source-free consumption.
+
+  Completed 2026-09-10 as `cloth` v0.6.0 with runtime ABI 12. Artifact format
+  8, compiler ABI 7, and schemas 2/1/1/1 remain unchanged.
+
 ## Stage 45.5: Universal Object coordination
 
 - [x] Approve the exact `Object` surface, lowercase alias relationship,
