@@ -1,7 +1,0 @@
-manifest-version = 1
-
-[package]
-name = "cloth"
-version = "0.6.0"
-
-[dependencies]

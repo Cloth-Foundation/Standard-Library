@@ -1,0 +1,3 @@
+// Root source for standalone standard-library object builds.
+// Add imports here as library declarations are implemented.
+// Object builds do not require an executable main function.

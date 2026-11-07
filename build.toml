@@ -1,0 +1,10 @@
+[project]
+name = "Cloth-Standard-Library"
+version = "0.0.1"
+entryPoint = "StandardLibrary.cloth.Library.main"
+
+[modules]
+StandardLibrary = "."
+
+[output]
+directory = "build"

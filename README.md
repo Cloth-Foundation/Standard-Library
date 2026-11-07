@@ -1,60 +1,59 @@
-# Cloth standard library
+# Cloth Standard Library
 
-This repository owns the source implementation of Cloth's standard library.
-It is included in the compiler workspace as the `std` submodule and distributed
-as a versioned part of the Cloth toolchain.
+The standard library is a Cloth project. All library source files live under
+`cloth/`, with ordinary subfolders for each area of the library.
 
-Stage 35 established the production package boundary. The public import root is
-reserved as `cloth`, with imports such as:
-
-```cloth
-import cloth.math::Math;
+```text
+build.toml
+module.toml
+cloth/
+    Library.co
+    collections/
 ```
 
-The library owns the canonical `cloth.lang.Object` declaration and the public
-primitive-wrapper hierarchy. The compiler and runtime own primitive storage,
-boxing layout, `Error`, `DivisionByZero`, memory management, and physical ABI
-behavior. Reusable APIs that can be implemented faithfully in Cloth belong
-here.
+For example, a future `List` implementation belongs in
+`cloth/collections/List.co`. No collection types are implemented in this scaffold.
 
-## Repository state
+The module's source root is the repository root (`StandardLibrary = "."`), so
+that future file will be imported as `using cloth.collections.List : List`.
+The module identity is configuration metadata and is not an import prefix.
+Ordinary subfolders do not need their own `module.toml` files. Importable
+declarations must be `pub`.
 
-Shuttle automatically supplies the exact distribution paired with the selected
-compiler; applications do not declare a `cloth` manifest dependency.
+## Build the scaffold
 
-The package is named `cloth` and has no executable target. Its source tree
-starts directly with areas such as `src/math/`; repeating `src/cloth/` would
-create incorrect `cloth.cloth.*` identities.
+With Shuttle on your PATH, run from this repository:
 
-The package is currently version `0.6.0`. Its prelude contains the ordinary,
-extensible errors `cloth.lang.errors.ArgumentError`,
-`cloth.lang.errors.StateError`, `cloth.lang.errors.IoError`, and
-`cloth.lang.errors.ParseError`, each with default and message constructors.
-Public types anywhere beneath `src/lang/` are available by short name as a
-low-priority compiler fallback. Their short names must be unique across that
-tree. Other areas, including `cloth.math` and `cloth.io`, remain explicit
-imports. `cloth.io.Console.ReadLine` provides portable line input.
-`Console.WriteError` and `Console.WriteErrorLine` provide deterministic
-standard-error output.
-`cloth.io.File.ReadBytes` performs bounded, exact binary reads of regular
-files.
-Strict lowercase primitive meta operations such as `int32::parse(text)` use the
-paired source-defined `cloth.lang.errors.ParseError` and require the caller to
-cover that typed effect.
+```text
+shuttle build --emit object
+```
 
-`cloth.lang.Object` supplies `Equals`, `HashCode`, and `ToString`. The abstract
-`Number`, `Integer`, and `FloatingPoint` types organize the sealed `Byte`,
-signed and unsigned integer, and floating wrappers. `Boolean` and `Character`
-derive directly from Object. Ordinary values remain unboxed until converted to
-`object` or `object?`.
+When checked out as the compiler's `Standard-Library/` submodule, run from the
+compiler repository root:
 
-See [ROADMAP.md](ROADMAP.md) for the approved order and [TODO.md](TODO.md) for
-the current work ledger. The latest coordinating contract is the compiler's
-[`stage_49_self_hosted_frontend_authority.md`](https://github.com/Cloth-Foundation/cCloth/blob/master/docs/proposals/stage_49_self_hosted_frontend_authority.md)
-proposal. The Stage 35 distribution, Stage 36 prelude, and Stage 45.5 Object
-contracts remain prerequisites.
+```powershell
+.\gradlew.bat :Shuttle:run --args="build --project Standard-Library --emit object"
+```
 
-## License
+Shuttle currently requires `project.entryPoint` even for object builds. The
+configured `StandardLibrary.cloth.Library.main` selects `cloth/Library.co`;
+`--emit object` does not require a `main` declaration. The root file is initially
+empty apart from comments. Add imports there as library files are implemented
+to include them in standalone validation: only reachable sources are compiled.
+The output is `build/Cloth-Standard-Library.o`.
 
-Cloth's standard library is licensed under the Apache License 2.0. See
-[LICENSE.txt](LICENSE.txt).
+## Use library sources
+
+Consumers add this repository root to their existing project's `[modules]`
+table, using a path relative to their own `build.toml`:
+
+```toml
+[modules]
+StandardLibrary = "../Standard-Library"
+```
+
+Keep the module identity `StandardLibrary` to match this repository's
+`module.toml`. Sources then select public declarations through `cloth.*` paths.
+The current toolchain compiles reachable library sources together with the
+application; the object build does not provide a separately linked library or
+package download support.
