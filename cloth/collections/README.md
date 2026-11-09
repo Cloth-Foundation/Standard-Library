@@ -21,17 +21,17 @@ This prints `[2, 1]` and normal completion. `List<T>::new` creates an empty list
 Type arguments are explicit and invariant. The private `ListSlot<T>` helper and
 backing field are implementation details; they are not exported.
 
-| Method | Result | Behavior |
-| --- | --- | --- |
-| `append(T value)` | void | Add an independent value at the end. |
-| `get(usize index)` | T | Return an independent value at an existing index. |
-| `insert(usize index, T value)` | void | Insert before index; size is a valid insertion index. |
-| `removeAt(usize index)` | T | Remove and return an independent value; preserve order. |
-| `size()` | usize | Return the current element count. |
-| `clear()` | void | Release stored values and keep reserved capacity for reuse. |
-| `reserve(usize minimum)` | void | Ensure capacity for at least this many elements without changing size. |
-| `toArray()` | T[] | Return an independent growable rectangular array. |
-| `copy()` | List&lt;T&gt; | Create a separate list identity with independent value storage. |
+| Method                         | Result        | Behavior                                                               |
+|--------------------------------|---------------|------------------------------------------------------------------------|
+| `append(T value)`              | void          | Add an independent value at the end.                                   |
+| `get(usize index)`             | T             | Return an independent value at an existing index.                      |
+| `insert(usize index, T value)` | void          | Insert before index; size is a valid insertion index.                  |
+| `removeAt(usize index)`        | T             | Remove and return an independent value; preserve order.                |
+| `size()`                       | usize         | Return the current element count.                                      |
+| `clear()`                      | void          | Release stored values and keep reserved capacity for reuse.            |
+| `reserve(usize minimum)`       | void          | Ensure capacity for at least this many elements without changing size. |
+| `toArray()`                    | T[]           | Return an independent growable rectangular array.                      |
+| `copy()`                       | List&lt;T&gt; | Create a separate list identity with independent value storage.        |
 
 Invalid indices and allocation failures stop execution at the first runtime error.
 An immutable binding (`:=` or `final`) still permits list mutation. Assigning a
@@ -76,11 +76,11 @@ fn main() {
 
 All three start empty and accept explicit invariant element types.
 
-| Type | Add | Remove and return T | Peek and return T |
-| --- | --- | --- | --- |
+| Type       | Add                                       | Remove and return T       | Peek and return T           |
+|------------|-------------------------------------------|---------------------------|-----------------------------|
 | `Deque<T>` | `pushFront(T value)`, `pushBack(T value)` | `popFront()`, `popBack()` | `peekFront()`, `peekBack()` |
-| `Queue<T>` | `enqueue(T value)` at the back | `dequeue()` at the front | `peek()` at the front |
-| `Stack<T>` | `push(T value)` at the top | `pop()` at the top | `peek()` at the top |
+| `Queue<T>` | `enqueue(T value)` at the back            | `dequeue()` at the front  | `peek()` at the front       |
+| `Stack<T>` | `push(T value)` at the top                | `pop()` at the top        | `peek()` at the top         |
 
 Each type supplies `size()` returning `usize`, `isEmpty()` returning `bool`,
 `clear()`, and `reserve(usize minimum)`. Clear releases the stored values and

@@ -2,17 +2,24 @@
 typedef<struct> ListSlot<T> { T value }
 
 pub typedef<class> List<T> {
+
     def<ListSlot<T>[]> items = []
 
     pub mt append(T value) { items.append({ value }) }
+
     pub mt<T> get(usize index) = items[index].value
+
     pub mt insert(usize index, T value) { items.insert(index, { value }) }
+
     pub mt<T> removeAt(usize index) {
         def<ListSlot<T>> removed = items.removeAt(index)
         return removed.value
     }
+
     pub mt<usize> size() = items::size
+
     pub mt clear() { items.clear() }
+
     pub mt reserve(usize minimum) { items.reserve(minimum) }
 
     // Ordinary array reception checks rectangular shape when T is an array.
