@@ -1,0 +1,32 @@
+// Each slot owns an independent value, including its array shape witnesses.
+typedef<struct> ListSlot<T> { T value }
+
+pub typedef<class> List<T> {
+    def<ListSlot<T>[]> items = []
+
+    pub mt append(T value) { items.append({ value }) }
+    pub mt<T> get(usize index) = items[index].value
+    pub mt insert(usize index, T value) { items.insert(index, { value }) }
+    pub mt<T> removeAt(usize index) {
+        def<ListSlot<T>> removed = items.removeAt(index)
+        return removed.value
+    }
+    pub mt<usize> size() = items::size
+    pub mt clear() { items.clear() }
+    pub mt reserve(usize minimum) { items.reserve(minimum) }
+
+    // Ordinary array reception checks rectangular shape when T is an array.
+    pub mt<T[]> toArray() {
+        def<T[]> result = []
+        result.reserve(items::size)
+        for (def<ListSlot<T>> item <- items) result.append(item.value)
+        return result
+    }
+
+    // Copy complete slots so absent nullable fields retain their witnesses.
+    pub mt<List<T>> copy() {
+        def result = List<T>::new
+        result.items = items
+        return result
+    }
+}

@@ -1,0 +1,25 @@
+typedef<struct> StackSlot<T> { T value }
+
+pub typedef<class> Stack<T> {
+    def<StackSlot<T>[]> items = []
+
+    pub mt push(T value) { items.append({ value }) }
+    pub mt<T> pop() {
+        def<StackSlot<T>> removed = items.removeAt(topIndex())
+        return removed.value
+    }
+    pub mt<T> peek() {
+        def<usize> index = topIndex()
+        return items[index].value
+    }
+    pub mt<usize> size() = items::size
+    pub mt<bool> isEmpty() = items::size == 0
+    pub mt clear() { items.clear() }
+    pub mt reserve(usize minimum) { items.reserve(minimum) }
+
+    mt<usize> topIndex() {
+        // On empty, let the ordinary checked access report the bounds error.
+        if (items::size == 0) return 0
+        return items::size - 1
+    }
+}

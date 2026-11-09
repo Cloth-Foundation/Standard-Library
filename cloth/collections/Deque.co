@@ -1,0 +1,66 @@
+typedef<struct> DequeSlot<T> { T value }
+typedef<struct> DequeSide<T> { DequeSlot<T>[] items }
+
+pub typedef<class> Deque<T> {
+    // The front side is reversed. Both ends grow and shrink at an array tail.
+    def<DequeSide<T>[2]> sides = [{ [] }, { [] }]
+
+    pub mt pushFront(T value) { sides[0].items.append({ value }) }
+    pub mt pushBack(T value) { sides[1].items.append({ value }) }
+    pub mt<T> popFront() = popSide(0)
+    pub mt<T> popBack() = popSide(1)
+    pub mt<T> peekFront() = peekSide(0)
+    pub mt<T> peekBack() = peekSide(1)
+    pub mt<usize> size() = sides[0].items::size + sides[1].items::size
+    pub mt<bool> isEmpty() = size() == 0
+    pub mt clear() {
+        sides[0].items.clear()
+        sides[1].items.clear()
+    }
+    pub mt reserve(usize minimum) {
+        // A caller can fill the deque from either end.
+        sides[0].items.reserve(minimum)
+        sides[1].items.reserve(minimum)
+    }
+
+    mt<T> peekSide(usize end) {
+        def<usize> count = sides[end].items::size
+        if (count != 0) {
+            def<usize> index = count - 1
+            return sides[end].items[index].value
+        }
+        def<usize> opposite = 1 - end
+        return sides[opposite].items[0].value
+    }
+
+    mt<T> popSide(usize end) {
+        if (sides[end].items::size == 0) refill(end)
+        def<usize> count = sides[end].items::size
+        // Index zero of an empty side follows the ordinary bounds error path.
+        def<usize> index = 0
+        if (count != 0) index = count - 1
+        def<DequeSlot<T>> removed = sides[end].items.removeAt(index)
+        return removed.value
+    }
+
+    mt refill(usize end) {
+        def<usize> opposite = 1 - end
+        def<usize> count = sides[opposite].items::size
+        if (count == 0) return
+
+        // Save the outer half, reverse the inner half onto the empty side,
+        // then restore the saved half. Only tail operations touch either side.
+        def<DequeSlot<T>[]> saved = []
+        def<usize> keep = count / 2
+        saved.reserve(keep)
+        while (saved::size < keep) {
+            saved.append(sides[opposite].items.removeAt(sides[opposite].items::size - 1))
+        }
+        while (sides[opposite].items::size != 0) {
+            sides[end].items.append(sides[opposite].items.removeAt(sides[opposite].items::size - 1))
+        }
+        while (saved::size != 0) {
+            sides[opposite].items.append(saved.removeAt(saved::size - 1))
+        }
+    }
+}

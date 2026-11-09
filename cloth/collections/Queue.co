@@ -1,0 +1,15 @@
+using cloth.collections.Deque : Deque
+
+pub typedef<class> Queue<T> {
+    def<Deque<T>> items = Deque<T>::new
+
+    pub mt enqueue(T value) { items.pushBack(value) }
+    pub mt<T> dequeue() = items.popFront()
+    pub mt<T> peek() = items.peekFront()
+    pub mt<usize> size() = items.size()
+    pub mt<bool> isEmpty() = items.isEmpty()
+    pub mt clear() { items.clear() }
+    pub mt reserve(usize minimum) { items.reserve(minimum) }
+
+    ~Queue { items::delete }
+}
