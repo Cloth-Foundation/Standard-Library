@@ -1,0 +1,2 @@
+// Marks a deliberately inline value.
+pub fn<T> magic<T>(T value) = value
