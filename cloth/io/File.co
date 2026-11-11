@@ -1,0 +1,15 @@
+using cloth.io.Path: Path, pathOf
+
+pub typedef<enum> FileError {
+    InvalidPath, NotFound, PermissionDenied, OpenFailed,
+    AlreadyOpen, NotOpen, ReadFailed
+}
+
+pub final typedef<class> File(def<Path> path) {
+    File(string path) : (pathOf(path)) {}
+
+    pub mt<FileError?> open() = self.openNative(self.path.spelling)
+    pub mt<unsigned int<8>[]?, FileError?> read(usize maxBytes) = intrinsic "io.file.read"
+
+    mt<FileError?> openNative(string spelling) = intrinsic "io.file.open"
+}

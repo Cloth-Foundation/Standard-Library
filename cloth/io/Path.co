@@ -1,0 +1,5 @@
+pub typedef<struct> Path {
+    string spelling
+}
+
+pub fn<Path> pathOf(string spelling) = { spelling }
