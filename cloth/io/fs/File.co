@@ -1,4 +1,4 @@
-using cloth.io.Path: Path, pathOf
+using cloth.io.path.Path: Path, pathOf
 
 pub typedef<enum> FileError {
     InvalidPath, NotFound, PermissionDenied, OpenFailed,
