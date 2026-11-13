@@ -1,0 +1,10 @@
+// A slot preserves the complete value, including an array's independent shape.
+typedef<struct> SnapshotSlot<T> { T value }
+
+pub typedef<struct> Snapshot<T> {
+    priv SnapshotSlot<T>[] slots;
+
+    mt append(T value) { slots.append({ value }) }
+}
+
+pub fn<Snapshot<T>> emptySnapshot<T>() = { [] }

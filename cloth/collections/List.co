@@ -1,3 +1,5 @@
+using cloth.collections.Snapshot : Snapshot, emptySnapshot
+
 // Each slot owns an independent value, including its array shape witnesses.
 typedef<struct> ListSlot<T> { T value }
 
@@ -8,6 +10,14 @@ pub typedef<class> List<T> {
     pub mt append(T value) { items.append({ value }) }
 
     pub mt<T> get(usize index) = items[index].value
+
+    pub operator [](usize index) -> T = get(index)
+
+    pub mt set(usize index, T value) { items[index] = { value } }
+
+    pub operator []=(usize index, T value) { set(index, value) }
+
+    operator []?(usize index) -> bool = index < size()
 
     pub mt insert(usize index, T value) { items.insert(index, { value }) }
 
@@ -21,6 +31,12 @@ pub typedef<class> List<T> {
     pub mt clear() { items.clear() }
 
     pub mt reserve(usize minimum) { items.reserve(minimum) }
+
+    pub operator foreach() -> Snapshot<T> {
+        def snapshot = emptySnapshot<T>()
+        for (def<ListSlot<T>> item <- items) snapshot.append(item.value)
+        return snapshot
+    }
 
     // Ordinary array reception checks rectangular shape when T is an array.
     pub mt<T[]> toArray() {

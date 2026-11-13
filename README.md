@@ -10,10 +10,12 @@ cloth/
     Library.co
     collections/
         List.co
+        Snapshot.co
 ```
 
 The public generic [List](cloth/collections/README.md) is implemented in
 `cloth/collections/List.co`, with independent value storage and explicit lifetime.
+It supports direct foreach through `Snapshot<T>` in `cloth/collections/Snapshot.co`.
 
 The module's source root is the repository root (`StandardLibrary = "."`), so
 that file is imported as `using cloth.collections.List : List`.

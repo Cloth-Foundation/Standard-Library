@@ -25,6 +25,7 @@ backing field are implementation details; they are not exported.
 |--------------------------------|---------------|------------------------------------------------------------------------|
 | `append(T value)`              | void          | Add an independent value at the end.                                   |
 | `get(usize index)`             | T             | Return an independent value at an existing index.                      |
+| `set(usize index, T value)`    | void          | Replace the whole value at an existing index.                          |
 | `insert(usize index, T value)` | void          | Insert before index; size is a valid insertion index.                  |
 | `removeAt(usize index)`        | T             | Remove and return an independent value; preserve order.                |
 | `size()`                       | usize         | Return the current element count.                                      |
@@ -42,19 +43,51 @@ Strings, arrays and structs copy recursively. Class-valued elements keep their
 object identities. Clearing or deleting a list does not delete those objects;
 their lifetime remains the caller's responsibility.
 
-`get()` returns a value snapshot. Changing a returned value does not replace the
-stored element; use `removeAt()` and `insert()` to replace a value. Class-valued
-snapshots retain the same object identity, as described above.
+`list[index]` and `list.get(index)` both take a `usize` index and return an
+independent value of `T`. Replace an element with `list[index] = value` or
+`list.set(index, value)`. Bracket writes check the captured list and index
+before the right-hand side and again before writing. `set()` checks the
+index inside the method after ordinary argument evaluation.
 
-`List<int[]>` accepts rows with different lengths. `copy()` preserves those
+Use compound assignments and standalone `++` or `--` when the element type
+supports the operation. A compound assignment reads the old value before
+evaluating the right-hand side. To edit an array element stored in a list,
+read the whole array into a binding, edit it there, and assign it back.
+
+`List<int[]>` accepts rows with different lengths. Replacement gives the new
+row its own shape and preserves the list's count. `copy()` preserves those
 independent lengths. `toArray()` checks the ordinary rectangular array rules and
 fails when present rows have incompatible dimensions. Empty and nullable rows
 follow the same receiving rules as other arrays. Each stored slot keeps its own
 shape; clearing a list imposes no width on later elements.
 
-Use `get()` and `size()` to traverse a list. Class indexing, indexed assignment,
-`::size` as a collection count, and direct foreach are separate language features.
-Exported arrays support ordinary array operations and snapshot foreach traversal.
+Use `for (def item <- list)` to traverse the list in order. Each loop entry
+captures the elements before the first iteration. The loop visits that
+snapshot even if the body edits or deletes the source list. Array elements
+keep their independent shapes, and class elements keep their checked
+identities. A nullable element uses an explicitly typed loop binding.
+
+## Snapshot
+
+Import `Snapshot` and `emptySnapshot` from `cloth.collections.Snapshot` to
+give your own collection a `foreach` operator. Append elements in traversal
+order and return the snapshot.
+
+```cloth
+using cloth.collections.Snapshot : Snapshot, emptySnapshot
+
+typedef<class> Pair (def<int> first, def<int> second) {
+    pub operator foreach() -> Snapshot<int> {
+        def snapshot = emptySnapshot<int>()
+        snapshot.append(first)
+        snapshot.append(second)
+        return snapshot
+    }
+}
+```
+
+The loop manages the snapshot's storage. Each iteration receives an
+independent value under the same rules as array foreach.
 
 ## Deque, Queue, and Stack
 
