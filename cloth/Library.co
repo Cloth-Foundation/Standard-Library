@@ -1,6 +1,7 @@
 // Root source for standalone standard-library object builds.
 // Object builds do not require an executable main function.
 using cloth.collections.List : List
+using cloth.collections.OwningList : OwningList
 using cloth.collections.Deque : Deque
 using cloth.collections.Queue : Queue
 using cloth.collections.Stack : Stack

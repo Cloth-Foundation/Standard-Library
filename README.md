@@ -10,12 +10,15 @@ cloth/
     Library.co
     collections/
         List.co
+        OwningList.co
         Snapshot.co
 ```
 
 The public generic [List](cloth/collections/README.md) is implemented in
 `cloth/collections/List.co`, with independent value storage and explicit lifetime.
 It supports direct foreach through `Snapshot<T>` in `cloth/collections/Snapshot.co`.
+[`OwningList<T>`](cloth/collections/README.md#owninglist) takes deletion authority
+over class objects and supplies checked reads, snapshot foreach, and ordered cleanup.
 
 The module's source root is the repository root (`StandardLibrary = "."`), so
 that file is imported as `using cloth.collections.List : List`.
@@ -51,8 +54,8 @@ The output is `build/Cloth-Standard-Library.o`.
 Toolchains that bundle this library make its source root available automatically;
 consumers still import each declaration explicitly. Select another checkout with
 `--stdlib PATH` on either command. The
-[collections guide](cloth/collections/README.md) covers List, Deque, Queue, and
-Stack. These sources use user-defined generic classes and structs.
+[collections guide](cloth/collections/README.md) covers List, OwningList, Deque,
+Queue, and Stack. These sources use user-defined generic classes and structs.
 
 A project that configures this root explicitly can add it to `[modules]`, using
 a path relative to its own `build.toml`:

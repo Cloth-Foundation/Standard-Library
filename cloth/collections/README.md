@@ -67,6 +67,53 @@ snapshot even if the body edits or deletes the source list. Array elements
 keep their independent shapes, and class elements keep their checked
 identities. A nullable element uses an explicitly typed loop binding.
 
+## OwningList
+
+`OwningList<T>` accepts non-null classes and class-backed interface types.
+`append(value)` gives the list deletion authority over the object. The same
+object can occupy only one slot in one owning list. Inserting an already owned
+object or creating an ownership cycle raises an ownership error.
+
+```cloth
+using cloth.collections.OwningList : OwningList
+
+typedef<class> Item (pub def<int> value) {
+    ~Item { println(value) }
+}
+
+fn main() {
+    def items = OwningList<Item>::new
+    items.append(Item::new(1))
+    items.append(Item::new(2))
+    items[0].value = 10
+    for (def item <- items) println(item.value)
+
+    def taken = items.removeAt(0)
+    items::delete
+    taken::delete
+}
+```
+
+| Operation | Result | Behavior |
+|---|---|---|
+| `OwningList<T>::new` | `OwningList<T>` | Create an empty owning list. |
+| `append(T value)` | void | Add the object at the end and acquire deletion authority. |
+| `get(usize index)` or `items[index]` | `T` | Return a checked alias to the object. |
+| `removeAt(usize index)` | `T` | Remove the entry and return its live object. The caller takes responsibility for deletion. |
+| `size()` | `usize` | Return the current count. |
+| `clear()` | void | Delete all owned objects in list order and leave the list empty and usable. |
+| `items::delete` | void | Delete all owned objects in list order and destroy the list. |
+
+Aliases can read and mutate the live object while the list owns it. After
+`removeAt`, any live alias can delete the object or give it to an owning list.
+Direct foreach captures the entries in order before the first iteration. The
+snapshot holds aliases, so deleting an object also invalidates its snapshot entry.
+
+During `clear()`, element destructors see an empty list. Attempts to append,
+remove, clear, or delete that list during cleanup raise a runtime error. During
+list destruction, ordinary access through aliases to the list fails its liveness
+check. Aliases to each deleted element become stale as its destructor begins.
+
 ## Snapshot
 
 Import `Snapshot` and `emptySnapshot` from `cloth.collections.Snapshot` to

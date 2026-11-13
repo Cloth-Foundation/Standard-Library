@@ -1,0 +1,49 @@
+using cloth.collections.Snapshot : Snapshot, emptySnapshot
+
+pub final typedef<class> OwningList<T: Object> {
+    def<T[]> items = []
+
+    mt acquire(Object item) = intrinsic "collections.ownership.acquire"
+    mt release(Object item) = intrinsic "collections.ownership.release"
+    mt deleteChild(Object item) = intrinsic "collections.ownership.delete"
+    mt checkMutation() = intrinsic "collections.ownership.check_mutation"
+    mt setCleanup(bool active) = intrinsic "collections.ownership.set_cleanup"
+
+    pub mt append(T value) {
+        acquire(value)
+        items.append(value)
+    }
+
+    pub mt<T> get(usize index) = items[index]
+
+    pub operator [](usize index) -> T = get(index)
+
+    operator []?(usize index) -> bool = index < size()
+
+    pub mt<T> removeAt(usize index) {
+        checkMutation()
+        def item = items.removeAt(index)
+        release(item)
+        return item
+    }
+
+    pub mt<usize> size() = items::size
+
+    pub operator foreach() -> Snapshot<T> {
+        def snapshot = emptySnapshot<T>()
+        for (def item <- items) snapshot.append(item)
+        return snapshot
+    }
+
+    pub mt clear() {
+        checkMutation()
+        setCleanup(true)
+        // Detach the entries before running user destructors. The list still owns them.
+        def detached = items
+        items = []
+        for (def index <- 0..detached::size) deleteChild(detached[index])
+        setCleanup(false)
+    }
+
+    ~OwningList { clear() }
+}
